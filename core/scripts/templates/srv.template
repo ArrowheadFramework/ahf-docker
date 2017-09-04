@@ -1,0 +1,11 @@
+$TTL 60
+@ IN	SOA ns.<domain>. root.<domain>. (
+				1        ; serial
+				240      ; refresh 
+				60       ; retry 
+				600      ; expire 
+				10       ; minimum 
+				)
+			NS	ns.<domain>.
+
+_dns-update._udp	SRV	0 0 53 ns.<domain>.

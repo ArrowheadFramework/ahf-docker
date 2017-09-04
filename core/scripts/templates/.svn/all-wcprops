@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/Arrowhead/!svn/ver/448/cots/trunk/isolinux/installation/zone-file-gen/templates
+END
+named.conf.template
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/Arrowhead/!svn/ver/448/cots/trunk/isolinux/installation/zone-file-gen/templates/named.conf.template
+END
+srv.template
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/Arrowhead/!svn/ver/441/cots/trunk/isolinux/installation/zone-file-gen/templates/srv.template
+END
+zone.template
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/Arrowhead/!svn/ver/441/cots/trunk/isolinux/installation/zone-file-gen/templates/zone.template
+END
+rev.template
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/Arrowhead/!svn/ver/441/cots/trunk/isolinux/installation/zone-file-gen/templates/rev.template
+END
+root.template
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/Arrowhead/!svn/ver/441/cots/trunk/isolinux/installation/zone-file-gen/templates/root.template
+END

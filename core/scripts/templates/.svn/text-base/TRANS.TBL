@@ -1,0 +1,5 @@
+F NAMED_CO.SVN;1                                                                                                                                                                                                  	named.conf.template.svn-base
+F REV_TEMP.SVN;1                                                                                                                                                                                                  	rev.template.svn-base
+F ROOT_TEM.SVN;1                                                                                                                                                                                                  	root.template.svn-base
+F SRV_TEMP.SVN;1                                                                                                                                                                                                  	srv.template.svn-base
+F ZONE_TEM.SVN;1                                                                                                                                                                                                  	zone.template.svn-base

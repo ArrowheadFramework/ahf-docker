@@ -1,0 +1,6 @@
+F NAMED_CO.TEM;1                                                                                                                                                                                                  	named.conf.template
+F REV.TEM;1                                                                                                                                                                                                       	rev.template
+F ROOT.TEM;1                                                                                                                                                                                                      	root.template
+F SRV.TEM;1                                                                                                                                                                                                       	srv.template
+F ZONE.TEM;1                                                                                                                                                                                                      	zone.template
+D _SVN                                                                                                                                                                                                            	.svn

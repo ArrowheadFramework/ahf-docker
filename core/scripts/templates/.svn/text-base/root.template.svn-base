@@ -1,0 +1,11 @@
+
+$TTL 300
+
+.       IN      SOA     ns.<domain>.        root.<domain>. (14 4h 1h 1w 1d)
+.       IN      NS      ns.<domain>.
+
+<domain>.   IN NS   ns.<domain>.
+;add domains here like the one above
+
+ns.<domain>.     1H         IN      A       <address>
+;add dns hosts here like the one above
