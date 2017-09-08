@@ -6,3 +6,5 @@ for var in "$@"
 do
     cat ~/.ssh/id_dsa.pub | ssh $var 'mkdir .ssh 2>/dev/null;cat >> .ssh/authorized_keys;chmod -R 0700 .ssh'
 done
+
+rpm -Uvh ManagementTool-1.2.5-1.noarch.rpm 

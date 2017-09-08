@@ -68,7 +68,22 @@ echo "* Disabling socket read timeout *"
 $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-1.http.request-timeout-seconds=-1
 $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds=-1
 
-$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.registerDomain=docker.ahf.'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.registerDomain=docker.ahf.'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.domain=docker.ahf'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddns.registerDomain=docker.ahf'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddns.createDomain=docker.ahf'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.createDomain=docker.ahf'
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddns.search=/'
+$GLASSFISH_ASADMIN create-jvm-options '-Ddns.server=127.0.0.1'
+$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.hostname=host.docker.ahf'
+$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.domain=docker.ahf'
+#Should this be srv.docker.ahf?
+$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.browsingDomains=srv.docker.ahf'
+#Apparently things go bad if you use the 'new' property for the old core-utils
+#$GLASSFISH_ASADMIN create-jvm-options '-Ddnssd.registerDomain=docker.ahf'
+#Apparently an older version of core-utils uses dns.registerDomain
+$GLASSFISH_ASADMIN create-jvm-options '-Ddns.registerDomain=srv.docker.ahf' #srv.docker.ahf?
+
 
 echo "* Enabling secure admin interface"
 $GLASSFISH_ASADMIN --host localhost --port $ADMIN_PORT enable-secure-admin

@@ -91,4 +91,5 @@ echo "Address is $ADDRESS"
 
 ./install-ntp-server.sh
 ./install-glassfish.sh
+./install-ssh-keys.sh
 
