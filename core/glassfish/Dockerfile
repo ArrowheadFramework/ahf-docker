@@ -4,7 +4,7 @@ RUN yum clean all && \
     yum -y update && \
     yum -y install iproute && \
     yum -y install openssh openssl openssh-clients && \
-    yum -y install wget unzip java-1.7.0-openjdk && \
+    yum -y install wget unzip java-1.7.0-openjdk-devel && \
     yum clean all
 
 ENV ADMIN_PORT=4848 \
