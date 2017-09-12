@@ -1,0 +1,31 @@
+version: '3'
+services:
+  glassfish:
+    build: ./glassfish
+    ports:
+      - "8080:8080"
+      - "8181:8181"
+    dns: ntpd # Might get ignored, using alias for backup
+    dns_search: docker.ahf
+    command: admin pass
+    hostname: glassfish
+    domainname: docker.ahf
+    depends_on:
+      - ntpd
+  ntpd:
+    build: ./ntpd
+    dns: localhost # Might get ignored, using alias for backup
+    dns_search: docker.ahf
+    ports:
+      - "53:53/udp"
+      - "53:53"
+      - "123:123/udp"
+      - "31935:31935"
+      - "31935:31935/udp"
+    networks:
+      default:
+        aliases: # Used for when dns is ignored
+          - 127.0.0.11
+    hostname: dns
+    domainname: docker.ahf
+
