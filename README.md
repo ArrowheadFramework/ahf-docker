@@ -15,6 +15,12 @@ To start using it:
 * Install `docker` and `docker-compose`
 * Clone the repository
 * Run `docker-compose up` from the *core* directory.
+  * To apply any changes to the docker files, you will have to do `docker-compose buld` first (even if you are 
+  working from a different copy of the project, because the previous build is cached and docker-compose currently
+  does not look for changes automatically).
+* *(Windows)* Docker might your credentials to share your drive. This is necessary to output the TSIG file to the host.
+You may remove this behaviour by editing the `docker-compose.yml` file and removing any `volumes` entries and their
+children.
 
 To use it with a new project, particularly if you are using the core-utils library, you will need to provide the
 JVM with the following parameters:
