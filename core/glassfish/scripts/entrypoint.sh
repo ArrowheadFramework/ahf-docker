@@ -54,7 +54,8 @@ grant {
   $GLASSFISH_ASADMIN --interactive=false deploy orchestration.ear
   ./install-ssh-keys.sh
   $GLASSFISH_ASADMIN --interactive=false deploy managementtool.war
-
+  rm *.ear
+  rm *.war
 
   $GLASSFISH_ASADMIN --host localhost --port $ADMIN_PORT enable-secure-admin
   rm ./pwdfile
