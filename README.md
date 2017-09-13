@@ -11,7 +11,7 @@ To use it with a new project, particularly if you are using the core-utils libra
 JVM with the following parameters:
 
 ```
--Ddns.server=<IP_of_the_dns_container>
+-Ddns.server=<IP_of_the_docker_interface>
 -Ddnssd.hostname=<ip_or_name_holding_your_service>
 -Ddnssd.domain=srv.docker.ahf.
 -Ddnssd.browsingDomains=srv.docker.ahf.
@@ -21,7 +21,7 @@ JVM with the following parameters:
 If you are using an older version of core-utils, the JVM parameters might be different:
 
 ```
--Ddns.server=<IP_of_the_dns_container>
+-Ddns.server=<IP_of_the_docker_interface>
 -Ddnssd.hostname=<ip_or_name_holding_your_service>
 -Ddnssd.domain=docker.ahf.
 -Ddnssd.browsingDomains=docker.ahf.
@@ -29,8 +29,9 @@ If you are using an older version of core-utils, the JVM parameters might be dif
 -Ddnssd.tsig="<tsig_file_location>"
 ```
 
-The IP of the DNS container can be found through the `docker network ls` and `docker network inspect` commands.
-Alternatively, you may run `ifconfig` (or the corresponding command) and use the IP address of the br-* adapter.
+The IP of the docker interface can be found running `ifconfig` (or the corresponding command). In Linux, the
+interface used by docker will be `br-*` whereas in Windows (unless you are using boot2docker), it will read
+something along the lines of `DockerNAT`.
 
 As for the tsig file. It is a two line file with the key name followed by the TSIG key in the next line.
 Currently the TSIG key is printed very early in the printed log, this will be updated to allow for retrieving it
