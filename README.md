@@ -33,16 +33,9 @@ The IP of the docker interface can be found running `ifconfig` (or the correspon
 interface used by docker will be `br-*` whereas in Windows (unless you are using boot2docker), it will read
 something along the lines of `DockerNAT`.
 
-As for the tsig file. It is a two line file with the key name followed by the TSIG key in the next line.
-Currently the TSIG key is printed very early in the printed log, this will be updated to allow for retrieving it
-more easily. For the time being you may use *CTRL + S* to pause the terminal output and *CTRL + Q* to resume.
-Alternatively, you may retrieve the key by running the following line while the containers are running:
-
-```
-docker exec -it core_ntpd_1 cat /etc/named.conf | grep secret
-```
-
-The tsig file then should have the following format:
+The TSIG file is used by the DNS server to autheticate update requests. It is made available after starting the 
+container for easy usage with core-utils. It can be located in `./out/tsig`. If you need to modify it for any 
+reasons, it should maintain the following format used by core-utils at least up to version 1.7.
 
 ```
 key.docker.ahf.
