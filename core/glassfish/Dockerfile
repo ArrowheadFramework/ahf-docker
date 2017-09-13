@@ -23,12 +23,16 @@ RUN wget -q http://download.oracle.com/glassfish/3.1.2.2/release/glassfish-3.1.2
     rm -f glassfish-3.1.2.2.zip && \
     rm -rf /glassfish3/glassfish/domains/domain1/
 
+WORKDIR /ahf
+
+RUN wget -q -O authorisation.ear https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/authorisation-application-1.2.ear?raw=true && \
+    wget -q -O managementtool.war https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/managementtool-1.2.5.war?raw=true && \
+    wget -q -O orchestration.ear https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/orchestration-application-1.1.ear?raw=true && \
+    wget -q -O service-registry.ear https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/service-registry-application-1.1.2.ear?raw=true
+
 RUN yum -y remove wget unzip && \
     yum clean all
 
-WORKDIR /ahf
-
 ADD ./scripts /ahf
-ADD ./core-services /ahf
 ENTRYPOINT ["/ahf/entrypoint.sh"]
 
