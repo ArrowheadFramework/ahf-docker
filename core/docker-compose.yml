@@ -3,7 +3,7 @@ services:
   glassfish:
     build: ./glassfish
     ports:
-      - "8080"
+      - "8080:8080"
       - "8181"
     dns: ntpd # Might get ignored, using alias for backup
     dns_search: docker.ahf
