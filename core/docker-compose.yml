@@ -28,4 +28,6 @@ services:
           - 127.0.0.11
     hostname: dns
     domainname: docker.ahf
+    volumes:
+      - ./out:/out
 
