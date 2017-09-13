@@ -65,6 +65,22 @@ key.docker.ahf.
 concern. _(If necessary, though, TSIG usage can be easily enforced by editing the named.conf.template file)_*
 
 
+## SimpleServiceDiscovery
+
+Systems without DNS-SD capabilities might consider using the SimpleServiceDiscovery service which is included.
+[Developed by Federico Montori](https://bitbucket.org/fedeselmer/simpleservicediscovery/), this service provides a REST
+API for performing operations on the service registry.
+
+The docker compose configuration will automatically deploy it. The corresponding files are located in the 
+`simpleservicediscovery` directory.
+
+To test it, you may perform a simple query as follows:
+```
+curl 127.0.0.1:8045/servicediscovery/service
+```
+
+The rest of the API will be documented here soon. For the time being please refer to the repository linked above.
+
 ## Disclaimer
 
 *This might open ports in your computer. Please consider this when using this alpha release.*
