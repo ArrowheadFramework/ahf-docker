@@ -52,7 +52,7 @@ grant {
   $GLASSFISH_ASADMIN --interactive=false deploy service-registry.ear
   $GLASSFISH_ASADMIN --interactive=false deploy authorisation.ear
   $GLASSFISH_ASADMIN --interactive=false deploy orchestration.ear
-  ./install-ssh-keys.sh
+  ./install-ssh-keys.sh # TODO: Remove this
   $GLASSFISH_ASADMIN --interactive=false deploy managementtool.war
   rm *.ear
   rm *.war

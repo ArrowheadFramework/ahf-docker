@@ -7,6 +7,7 @@ do
   sleep 2
 done
 
+# TODO: Move this to a template file
 echo "# ARROWHEAD MODULE PROPERTIES
 # Core Services Discovery
 core.server=ntpd
