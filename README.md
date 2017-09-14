@@ -68,8 +68,7 @@ concern. _(If necessary, though, TSIG usage can be easily enforced by editing th
 ## SimpleServiceDiscovery
 
 Systems without DNS-SD capabilities might consider using the SimpleServiceDiscovery service which is included.
-[Developed by Federico Montori](https://bitbucket.org/fedeselmer/simpleservicediscovery/), this service provides a REST
-API for performing operations on the service registry.
+[Developed by Federico Montori and Hasan Derhamy](https://bitbucket.org/fedeselmer/simpleservicediscovery/), this service provides a REST API for performing operations on the service registry.
 
 The docker compose configuration will automatically deploy it. The corresponding files are located in the 
 `simpleservicediscovery` directory.
