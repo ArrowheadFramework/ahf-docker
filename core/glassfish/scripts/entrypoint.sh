@@ -41,10 +41,6 @@ grant {
   echo "Configuring Glassfish domain, this might take up to a minute..."
   $GLASSFISH_HOME/bin/asadmin create-domain --keytooloptions CN=$SERVER_HOSTNAME --nopassword=true --user=$GLASSFISH_ADMIN domain1
 
-  keytool -importkeystore -srckeystore $DOMAIN_CONFIG_DIR/keystore.jks -destkeystore $DOMAIN_CONFIG_DIR/keystore.p12 \
-  -srcalias s1as -srcstoretype jks -deststoretype pkcs12 -srcstorepass changeit -deststorepass changeit
-  openssl pkcs12 -in $DOMAIN_CONFIG_DIR/keystore.p12 -out /out/cert.pem -passin pass:changeit -passout pass:changeit
-
   $GLASSFISH_HOME/bin/asadmin --user $GLASSFISH_ADMIN --passwordfile=./chpwdfile change-admin-password
   $GLASSFISH_HOME/bin/asadmin start-domain
   $GLASSFISH_HOME/bin/asadmin start-database
@@ -78,8 +74,13 @@ grant {
 fi
 
 
+keytool -importkeystore -srckeystore $DOMAIN_CONFIG_DIR/keystore.jks -destkeystore $DOMAIN_CONFIG_DIR/keystore.p12 \
+-srcalias s1as -srcstoretype jks -deststoretype pkcs12 -srcstorepass changeit -deststorepass changeit
+openssl pkcs12 -in $DOMAIN_CONFIG_DIR/keystore.p12 -out /out/cert.pem -passin pass:changeit -passout pass:changeit
+rm $DOMAIN_CONFIG_DIR/keystore.p12
 cp $DOMAIN_CONFIG_DIR/keystore.jks /tls/keystore.jks
 cp $DOMAIN_CONFIG_DIR/cacerts.jks /tls/cacerts.jks
+
 $GLASSFISH_HOME/bin/asadmin start-database
 $GLASSFISH_HOME/bin/asadmin start-domain -v
 
