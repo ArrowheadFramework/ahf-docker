@@ -1,13 +1,23 @@
 #!/bin/bash
 set -e
 
+while ! nslookup glassfish.docker.ahf ntpd &> /dev/null;
+do
+  sleep 2;
+done
+
+rm -f /out/cert.pem
+rm -f /tls/keystore.jks /tls/cacerts.jks
+
 ADMIN_PORT=4848
 WEB_PORT=8080
 SEC_WEB_PORT=8181
 GLASSFISH_HOME=/glassfish3/glassfish/
 GLASSFISH_ADMIN=$1
 PASSWORD=$2
+ADDRESS=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
 SERVER_HOSTNAME=`hostname -f`
+DOMAIN_CONFIG_DIR=$GLASSFISH_HOME/domains/domain1/config
 
 
 if [[ ! -d /glassfish3/glassfish/domains/domain1/ ]]; then
@@ -30,15 +40,19 @@ grant {
   echo "Glassfish password is $PASSWORD"
   echo "Configuring Glassfish domain, this might take up to a minute..."
   $GLASSFISH_HOME/bin/asadmin create-domain --keytooloptions CN=$SERVER_HOSTNAME --nopassword=true --user=$GLASSFISH_ADMIN domain1
+
+  keytool -importkeystore -srckeystore $DOMAIN_CONFIG_DIR/keystore.jks -destkeystore $DOMAIN_CONFIG_DIR/keystore.p12 \
+  -srcalias s1as -srcstoretype jks -deststoretype pkcs12 -srcstorepass changeit -deststorepass changeit
+  openssl pkcs12 -in $DOMAIN_CONFIG_DIR/keystore.p12 -out /out/cert.pem -passin pass:changeit -passout pass:changeit
+
   $GLASSFISH_HOME/bin/asadmin --user $GLASSFISH_ADMIN --passwordfile=./chpwdfile change-admin-password
   $GLASSFISH_HOME/bin/asadmin start-domain
   $GLASSFISH_HOME/bin/asadmin start-database
   GLASSFISH_ASADMIN="$GLASSFISH_HOME/bin/asadmin --user $GLASSFISH_ADMIN --passwordfile=./pwdfile"
-  $GLASSFISH_ASADMIN delete-auth-realm certificate
-  $GLASSFISH_ASADMIN create-auth-realm --classname com.sun.enterprise.security.auth.realm.certificate.CertificateRealm --property assign-groups=peer certificate
-  $GLASSFISH_ASADMIN delete-ssl --type http-listener http-listener-2
-  $GLASSFISH_ASADMIN create-ssl --certname s1as --type http-listener --ssl3enabled=true --tlsenabled=true --clientauthenabled=true http-listener-2
+
+  $GLASSFISH_ASADMIN set configs.config.server-config.security-service.auth-realm.certificate.property.assign-groups=peer
   $GLASSFISH_ASADMIN set server-config.ejb-container.ejb-timer-service.property.reschedule-failed-timer=true
+  $GLASSFISH_ASADMIN set configs.config.server-config.network-config.protocols.protocol.http-listener-2.ssl.client-auth-enabled=true
   $GLASSFISH_ASADMIN set server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size=50
   $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-1.http.request-timeout-seconds=-1
   $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds=-1
@@ -63,6 +77,9 @@ grant {
   $GLASSFISH_HOME/bin/asadmin stop-domain
 fi
 
+
+cp $DOMAIN_CONFIG_DIR/keystore.jks /tls/keystore.jks
+cp $DOMAIN_CONFIG_DIR/cacerts.jks /tls/cacerts.jks
 $GLASSFISH_HOME/bin/asadmin start-database
 $GLASSFISH_HOME/bin/asadmin start-domain -v
 

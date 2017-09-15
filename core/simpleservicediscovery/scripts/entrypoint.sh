@@ -1,10 +1,9 @@
 #!/bin/bash
 set -e
 
-sleep 2
-while [ ! -f /tsig/tsig ]
+while [ ! `curl -sL -w "%{http_code}" "http://glassfish:8080/managementtool" -o /dev/null` = "200" ] || [ ! -f /tls/cacerts.jks ];
 do
-  sleep 2
+  sleep 3;
 done
 
 # TODO: Move this to a template file
@@ -16,18 +15,18 @@ core.hostname=localhost
 core.tsig=/tsig/tsig
 
 # Truststore/keystore
-truststore.file=./SimpleServiceRegistry.jks
-truststore.password=abc1234
-keystore.file=./SimpleServiceRegistry.jks
-keystore.password=abc1234
+truststore.file=/tls/cacerts.jks
+truststore.password=changeit
+keystore.file=/tls/keystore.jks
+keystore.password=changeit
 
 # Authorisation
 # Backup URL if not found in SR
-authorisation.url=https://glassfish:8181/authorisation-control
+authorisation.url=https://glassfish:8181/authorisation
 
 # Orchestration
 # Backup URL if not found in SR
-orchestration.url=https://glassfish:8181/orchestration-store
+orchestration.url=https://glassfish:8181/orchestration/store
 # Orchestration Store poll interval
 orchestration.monitor.interval=100
 
