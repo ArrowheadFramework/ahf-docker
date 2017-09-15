@@ -80,6 +80,36 @@ curl 127.0.0.1:8045/servicediscovery/service
 
 The rest of the API will be documented here soon. For the time being please refer to the repository linked above.
 
+
+## Testing
+
+Correct deployment of the different components can be quickly tested as follows. These commands assume you are currently
+at the `core` folder.
+
+### Service Discovery
+This is only an EJB used by Orchestration and Authorisation, so there is no direct way to test it. You can, however check
+that it is deployed by using the following command. You will be asked to accept the server's certificate and to log in as
+the Glassfish administrator (default is admin:pass).
+```
+docker exec -it core_glassfish_1 /glassfish3/glassfish/bin/asadmin list-applications
+```
+
+### Orchestration
+```
+curl https://127.0.0.1:8181/orchestration/store/orchestration/configurations -k --cert tls/cert.pem:changeit -i
+```
+
+### Authorisation
+This one is actually not working at the moment:
+```
+curl https://127.0.0.1:8181/authorisation/authorisation -k -i -X POST -H 'Content-Type: application/xml' -d '<AuthorisationRequest><serviceType></serviceType><serviceName></serviceName><distinguishedName></distinguishedName></AuthorisationRequest>' --cert tls/cert.pem:changeit
+```
+
+### Management Tool
+In your explorer you may use this tool. Head to [127.0.0.1:8080/managementtool] and input the Glassfish administrator
+credentials (default are admin:pass).
+
+
 ## Disclaimer
 
 *This might open ports in your computer. Please consider this when using this alpha release.*
