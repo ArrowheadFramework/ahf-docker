@@ -44,11 +44,23 @@ If you are using an older version of core-utils, the JVM parameters might be dif
 -Ddnssd.tsig="<tsig_file_location>"
 ```
 
-### Server IP
+### Connection and security
 
-The IP of the docker interface can be found running `ifconfig` (or the corresponding command). In Linux, the
-interface used by docker will be `br-*` whereas in Windows (unless you are using boot2docker), it will read
-something along the lines of `DockerNAT`.
+To connect to services running in your own computer you may use the `127.0.0.1` local IP along with the corresponding service
+port. Docker sets up the necessary bindings for the corresponding containers.
+
+If you wish to connect to the services from external machines, you may use the host's IP address. If there are any issues, you
+should check your firewall and, in Linux, the setting of `net.ipv4.conf.all.forwarding`.
+
+You may also use that system parameter if you wish to restrict services to only be accesible by the host running the containers.
+To do this, you would run the following command (which you can change at any point during runtime without having to restart the
+containers):
+
+```
+$ sudo sysctl net.ipv4.conf.all.forwarding=0
+```
+
+Alternatively, you may set up rules in your firewall, but that is beyond the scope of this document.
 
 ### TSIG
 
@@ -112,4 +124,4 @@ credentials (default are admin:pass).
 
 ## Disclaimer
 
-*This might open ports in your computer. Please consider this when using this alpha release.*
+*This might open ports in your computer. Please refer to the [Connection and security](https://github.com/ArrowheadFramework/ahf-docker#connection-and-security) section *
