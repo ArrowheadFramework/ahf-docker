@@ -118,7 +118,7 @@ curl https://127.0.0.1:8181/authorisation/authorisation -k -i -X POST -H 'Conten
 ```
 
 ### Management Tool
-In your explorer you may use this tool. Head to [127.0.0.1:8080/managementtool] and input the Glassfish administrator
+In your explorer you may use this tool. Head to [http://127.0.0.1:8080/managementtool] and input the Glassfish administrator
 credentials (default are admin:pass).
 
 
