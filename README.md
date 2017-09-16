@@ -124,4 +124,4 @@ credentials (default are admin:pass).
 
 ## Disclaimer
 
-*This might open ports in your computer. Please refer to the [Connection and security](https://github.com/ArrowheadFramework/ahf-docker#connection-and-security) section *
+*This might open ports in your computer. Please refer to the [Connection and security](https://github.com/ArrowheadFramework/ahf-docker#connection-and-security) section*
