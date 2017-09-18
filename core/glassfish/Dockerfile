@@ -17,11 +17,10 @@ ENV ADMIN_PORT=4848 \
 #    unzip -q glassfish-4.1.2.zip && \
 #    rm -f glassfish-4.1.2.zip && \
 #    rm -rf /glassfish4/glassfish/domains/domain1/
-    
+
 RUN wget -q http://download.oracle.com/glassfish/3.1.2.2/release/glassfish-3.1.2.2.zip && \
     unzip -q glassfish-3.1.2.2.zip && \
-    rm -f glassfish-3.1.2.2.zip && \
-    rm -rf /glassfish3/glassfish/domains/domain1/
+    rm -f glassfish-3.1.2.2.zip
 
 WORKDIR /ahf
 
@@ -34,5 +33,9 @@ RUN yum -y remove wget unzip && \
     yum clean all
 
 ADD ./scripts /ahf
+
+ADD http://www.random.org/strings/?num=10&len=8&digits=on&upperalpha=on&loweralpha=on&unique=on&format=plain&rnd=new uuid
+RUN rm -rf /glassfish3/glassfish/domains/domain1/
+
 ENTRYPOINT ["/ahf/entrypoint.sh"]
 
