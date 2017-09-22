@@ -17,6 +17,7 @@ GLASSFISH_ADMIN=$1
 PASSWORD=$2
 ADDRESS=`ifconfig | grep 'inet addr:' | grep -v '127.0.0.1' | cut -d: -f2 | awk '{print $1}'`
 SERVER_HOSTNAME=`hostname -f`
+SERVER_DOMAIN=`hostname -d`
 DOMAIN_CONFIG_DIR=$GLASSFISH_HOME/domains/domain1/config
 
 
@@ -52,6 +53,7 @@ grant {
   $GLASSFISH_ASADMIN set server.thread-pools.thread-pool.http-thread-pool.max-thread-pool-size=50
   $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-1.http.request-timeout-seconds=-1
   $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-2.http.request-timeout-seconds=-1
+  $GLASSFISH_ASADMIN set server-config.network-config.protocols.protocol.http-listener-2..ssl.cert-nickname=glassfish
   $GLASSFISH_ASADMIN create-jvm-options "-Ddns.server=ntpd:\
 -Ddnssd.hostname=glassfish.docker.ahf.:\
 -Ddnssd.domain=docker.ahf.:\
@@ -71,15 +73,32 @@ grant {
   rm ./pwdfile
   rm ./chpwdfile
   $GLASSFISH_HOME/bin/asadmin stop-domain
+
+  # Create CA and register it
+  rm -f cacert.jks
+  openssl genrsa -des3 -out $DOMAIN_CONFIG_DIR/ca.key -passout pass:changeit 4096
+  openssl req -new -x509 -days 365 -key $DOMAIN_CONFIG_DIR/ca.key -out $DOMAIN_CONFIG_DIR/ca.crt -passin pass:changeit -subj "/C=SE/L=Europe/O=ArroheadFramework/OU=DockerToolsCA/CN=ca.$SERVER_DOMAIN"
+  keytool -keystore $DOMAIN_CONFIG_DIR/cacerts.jks -storepass changeit -import -trustcacerts -v -alias dockerca -file $DOMAIN_CONFIG_DIR/ca.crt -noprompt
+  
+  # Expose the CA certificate, private key and store (with only this CA in it)
+  # This is to sign new certificates and recognise certificates signed by this CA
+  # Includes a helpful script for signing new certificates and adding them to their own store
+  cp -f $DOMAIN_CONFIG_DIR/ca.* /out/
+  cp -f $DOMAIN_CONFIG_DIR/cacerts.jks /out/
+  cp -f /ahf/generate-signed-cert.sh /out/
+  
+  # Use CA to create a signed server certificate
+  openssl genrsa -des3 -out $DOMAIN_CONFIG_DIR/glassfish.key -passout pass:changeit 4096
+  openssl req -new -key $DOMAIN_CONFIG_DIR/glassfish.key -out $DOMAIN_CONFIG_DIR/glassfish.csr -passin pass:changeit -subj "/C=SE/L=Europe/O=ArroheadFramework/OU=DockerTools/CN=$SERVER_HOSTNAME"
+  openssl x509 -req -days 365 -in $DOMAIN_CONFIG_DIR/glassfish.csr -CA $DOMAIN_CONFIG_DIR/ca.crt -CAkey $DOMAIN_CONFIG_DIR/ca.key -out $DOMAIN_CONFIG_DIR/glassfish.crt -passin pass:changeit -set_serial 01
+  
+  # Register the server certificate-key pair
+  cat $DOMAIN_CONFIG_DIR/glassfish.crt $DOMAIN_CONFIG_DIR/ca.crt > $DOMAIN_CONFIG_DIR/glassfish-ca.crt
+  keytool -import -trustcacerts -alias glassfish -file $DOMAIN_CONFIG_DIR/glassfish-ca.crt -keystore $DOMAIN_CONFIG_DIR/cacerts.jks -storepass changeit -noprompt
+  openssl pkcs12 -export -in $DOMAIN_CONFIG_DIR/glassfish-ca.crt -inkey $DOMAIN_CONFIG_DIR/glassfish.key -out $DOMAIN_CONFIG_DIR/glassfish.p12 -name glassfish -CAfile $DOMAIN_CONFIG_DIR/ca.crt -caname "ca" -passin pass:changeit -passout pass:changeit
+  keytool -importkeystore -deststorepass changeit -destkeypass changeit -destkeystore $DOMAIN_CONFIG_DIR/keystore.jks -srckeystore $DOMAIN_CONFIG_DIR/glassfish.p12 -srcstoretype PKCS12 -srcstorepass changeit -alias glassfish
+
 fi
-
-
-keytool -importkeystore -srckeystore $DOMAIN_CONFIG_DIR/keystore.jks -destkeystore $DOMAIN_CONFIG_DIR/keystore.p12 \
--srcalias s1as -srcstoretype jks -deststoretype pkcs12 -srcstorepass changeit -deststorepass changeit
-openssl pkcs12 -in $DOMAIN_CONFIG_DIR/keystore.p12 -out /out/cert.pem -passin pass:changeit -passout pass:changeit
-rm $DOMAIN_CONFIG_DIR/keystore.p12
-cp $DOMAIN_CONFIG_DIR/keystore.jks /tls/keystore.jks
-cp $DOMAIN_CONFIG_DIR/cacerts.jks /tls/cacerts.jks
 
 $GLASSFISH_HOME/bin/asadmin start-database
 $GLASSFISH_HOME/bin/asadmin start-domain -v
