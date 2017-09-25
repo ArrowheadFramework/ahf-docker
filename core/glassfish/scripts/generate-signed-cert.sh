@@ -29,3 +29,6 @@ openssl pkcs12 -export -name $NAME -in $NAME.crt -inkey $NAME.key -out $NAME.p12
 cat $NAME.crt ca.crt > ${NAME}-ca.crt
 openssl pkcs12 -export -in ${NAME}-ca.crt -inkey $NAME.key -out $NAME.p12 -name $NAME -CAfile ca.crt -caname "ca" -passin pass:$OUTPASS -passout pass:$OUTPASS
 
+rm -f
+keytool -importkeystore -srckeystore $NAME.p12 -srcstoretype pkcs12 -destkeystore $NAME.jks -deststoretype jks -deststorepass $OUTPASS -srcstorepass $OUTPASS
+
