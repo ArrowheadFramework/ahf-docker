@@ -8,6 +8,7 @@ done
 
 rm -f /out/cert.pem
 rm -f /tls/keystore.jks /tls/cacerts.jks
+rm -f /tls/*
 
 ADMIN_PORT=4848
 WEB_PORT=8080
@@ -86,6 +87,8 @@ grant {
   cp -f $DOMAIN_CONFIG_DIR/ca.* /out/
   cp -f $DOMAIN_CONFIG_DIR/cacerts.jks /out/
   cp -f /ahf/generate-signed-cert.sh /out/
+  cp -f $DOMAIN_CONFIG_DIR/*.jks /tls/
+  
   
   # Use CA to create a signed server certificate
   openssl genrsa -des3 -out $DOMAIN_CONFIG_DIR/glassfish.key -passout pass:changeit 4096
