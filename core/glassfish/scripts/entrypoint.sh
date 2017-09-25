@@ -6,10 +6,6 @@ do
   sleep 2;
 done
 
-rm -f /out/cert.pem
-rm -f /tls/keystore.jks /tls/cacerts.jks
-rm -f /tls/*
-
 ADMIN_PORT=4848
 WEB_PORT=8080
 SEC_WEB_PORT=8181
