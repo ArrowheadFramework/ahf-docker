@@ -8,5 +8,5 @@ $TTL 300
 ;add domains here like the one above
 
 ns.<domain>.     1H         IN      A       <address>
-glassfish.<domain>.	1H	IN	A	<glassfish_address>
+<dockershorthost>.<domain>.	1H	IN	A	<glassfish_address>
 ;add dns hosts here like the one above

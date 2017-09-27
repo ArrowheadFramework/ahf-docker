@@ -72,9 +72,9 @@ grant {
   $GLASSFISH_HOME/bin/asadmin stop-domain
 
   # Create CA and register it
-  rm -f cacert.jks
+  rm -f cacerts.jks
   openssl genrsa -des3 -out $DOMAIN_CONFIG_DIR/ca.key -passout pass:changeit 4096
-  openssl req -new -x509 -days 365 -key $DOMAIN_CONFIG_DIR/ca.key -out $DOMAIN_CONFIG_DIR/ca.crt -passin pass:changeit -subj "/C=SE/L=Europe/O=ArroheadFramework/OU=DockerToolsCA/CN=ca.$SERVER_DOMAIN"
+  openssl req -new -x509 -days 365 -key $DOMAIN_CONFIG_DIR/ca.key -out $DOMAIN_CONFIG_DIR/ca.crt -passin pass:changeit -subj "/C=SE/L=Europe/O=ArrowheadFramework/OU=DockerToolsCA/CN=ca.$SERVER_DOMAIN"
   keytool -keystore $DOMAIN_CONFIG_DIR/cacerts.jks -storepass changeit -import -trustcacerts -v -alias dockerca -file $DOMAIN_CONFIG_DIR/ca.crt -noprompt
   
   # Expose the CA certificate, private key and store (with only this CA in it)
@@ -83,12 +83,16 @@ grant {
   cp -f $DOMAIN_CONFIG_DIR/ca.* /out/
   cp -f $DOMAIN_CONFIG_DIR/cacerts.jks /out/
   cp -f /ahf/generate-signed-cert.sh /out/
-  cp -f $DOMAIN_CONFIG_DIR/*.jks /tls/
+
+  # Also expose in volume so other containers have filesystem-independent access
+  cp -f $DOMAIN_CONFIG_DIR/ca.* /tls/
+  cp -f $DOMAIN_CONFIG_DIR/cacerts.jks /tls/
+  cp -f /ahf/generate-signed-cert.sh /tls/
   
   
   # Use CA to create a signed server certificate
   openssl genrsa -des3 -out $DOMAIN_CONFIG_DIR/glassfish.key -passout pass:changeit 4096
-  openssl req -new -key $DOMAIN_CONFIG_DIR/glassfish.key -out $DOMAIN_CONFIG_DIR/glassfish.csr -passin pass:changeit -subj "/C=SE/L=Europe/O=ArroheadFramework/OU=DockerTools/CN=$SERVER_HOSTNAME"
+  openssl req -new -key $DOMAIN_CONFIG_DIR/glassfish.key -out $DOMAIN_CONFIG_DIR/glassfish.csr -passin pass:changeit -subj "/C=SE/L=Europe/O=ArrowheadFramework/OU=DockerTools/CN=*.$SERVER_DOMAIN"
   openssl x509 -req -days 365 -in $DOMAIN_CONFIG_DIR/glassfish.csr -CA $DOMAIN_CONFIG_DIR/ca.crt -CAkey $DOMAIN_CONFIG_DIR/ca.key -out $DOMAIN_CONFIG_DIR/glassfish.crt -passin pass:changeit -set_serial 01
   
   # Register the server certificate-key pair

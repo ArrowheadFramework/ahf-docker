@@ -19,16 +19,16 @@ CN=$4
 CACRT=$5
 CAKEY=$6
 
+rm -f $NAME.key $NAME.csr $NAME.p12 $NAME.jks
 
 openssl genrsa -des3 -out $NAME.key -passout pass:$OUTPASS 4096
-openssl req -new -key $NAME.key -out $NAME.csr -passin pass:$OUTPASS -subj "/C=SE/L=Europe/O=ArroheadFramework/OU=DockerTools/CN=$CN"
-openssl x509 -req -days 365 -in $NAME.csr -CA $CACRT -CAkey $CAKEY -out $NAME.crt -passin pass:$CAPASS -set_serial 01
+openssl req -new -key $NAME.key -out $NAME.csr -passin pass:$OUTPASS -subj "/C=SE/L=Europe/O=ArrowheadFramework/OU=DockerTools/CN=$CN"
+openssl x509 -req -days 364 -in $NAME.csr -CA $CACRT -CAkey $CAKEY -out $NAME.crt -passin pass:$CAPASS -set_serial 01
 
-openssl pkcs12 -export -name $NAME -in $NAME.crt -inkey $NAME.key -out $NAME.p12 -passin pass:$OUTPASS -passout pass:$OUTPASS
+#openssl pkcs12 -export -name $NAME -in $NAME.crt -inkey $NAME.key -out $NAME.p12 -passin pass:$OUTPASS -passout pass:$OUTPASS
 
-cat $NAME.crt ca.crt > ${NAME}-ca.crt
-openssl pkcs12 -export -in ${NAME}-ca.crt -inkey $NAME.key -out $NAME.p12 -name $NAME -CAfile ca.crt -caname "ca" -passin pass:$OUTPASS -passout pass:$OUTPASS
+cat $NAME.crt $CACRT > ${NAME}-ca.crt
+openssl pkcs12 -export -in ${NAME}-ca.crt -inkey $NAME.key -out $NAME.p12 -name $NAME -CAfile $CACRT -caname "ca" -passin pass:$OUTPASS -passout pass:$OUTPASS
 
-rm -f
 keytool -importkeystore -srckeystore $NAME.p12 -srcstoretype pkcs12 -destkeystore $NAME.jks -deststoretype jks -deststorepass $OUTPASS -srcstorepass $OUTPASS
 

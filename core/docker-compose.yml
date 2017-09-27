@@ -6,8 +6,8 @@ services:
       - "8080:8080"
       - "8181:8181"
       - "4848:4848"
-    dns: ntpd # Might get ignored, using alias for backup
-    dns_search: docker.ahf
+    dns:
+      - ntpd
     command: admin pass
     hostname: glassfish
     domainname: docker.ahf
@@ -21,10 +21,14 @@ services:
       - type: volume
         source: tls
         target: /tls
+    networks:
+      ahf:
+        aliases: # Used for when dns is ignored
+          - glassfish.docker.ahf
   ntpd:
     build: ./ntpd
-    dns: localhost # Might get ignored, using alias for backup
-    dns_search: docker.ahf
+    dns:
+      - ntpd
     ports:
       - "53:53/udp"
       - "53"
@@ -32,9 +36,11 @@ services:
       - "31935"
       - "31935/udp"
     networks:
-      default:
+      ahf:
         aliases: # Used for when dns is ignored
-          - 127.0.0.11
+          - ntpd.docker.ahf
+          - named.docker.ahf
+          - ns.docker.ahf
     hostname: dns
     domainname: docker.ahf
     volumes:
@@ -47,8 +53,8 @@ services:
     ports:
       - "5683:5683"
       - "8045:8045"
-    dns: ntpd
-    dns_search: docker.ahf
+    dns:
+      - ntpd
     hostname: simpleservicediscovery
     domainname: docker.ahf
     depends_on:
@@ -60,6 +66,13 @@ services:
       - type: volume
         source: tls
         target: /tls
+    networks:
+      ahf:
+        aliases: # Used for when dns is ignored
+          - simpleservicediscovery.docker.ahf
+          - sdd.docker.ahf
 volumes:
   tsig:
   tls:
+networks:
+  ahf:

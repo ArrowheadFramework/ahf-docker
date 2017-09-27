@@ -53,6 +53,7 @@ sed -e "s/<host-ip>/${ADDRESS}/g" \
 # root zone
 sed -e "s/<address>/${ADDRESS}/g" \
     -e "s/<domain>/${DOMAIN}/g" \
+    -e "s/<dockershorthost>/${SHOST}/g" \
     -e "s/<glassfish_address>/${GLASSFISH_ADDRESS}/g" \
     templates/root.template > ${GENDIR}/var/named/root
 
