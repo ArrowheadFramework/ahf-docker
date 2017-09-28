@@ -4,4 +4,4 @@ core/tsig
 core/out
 **/.idea
 *.iml
-.class
+*.class
