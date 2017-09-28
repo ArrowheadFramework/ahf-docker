@@ -33,6 +33,9 @@ RUN yum clean all && \
 
 WORKDIR /ahf
 
+EXPOSE 53/tcp
+EXPOSE 53/udp
+
 ADD ./scripts /ahf
 ENTRYPOINT ["/ahf/entrypoint.sh"]
 

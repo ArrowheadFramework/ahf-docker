@@ -47,7 +47,7 @@ zone "srv.<localdomain>" IN {
 	allow-update { any; };
 };
 
-key key.<localdomain>. {
+key "key.<localdomain>." {
 	algorithm hmac-md5;
 	secret "<srv-key>";
 };
