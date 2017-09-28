@@ -30,10 +30,10 @@ public final class Configuration {
     public static String lightControllerEndpoint;
 
     public static String serviceDiscoveryEndpoint = "http://simpleservicediscovery.docker.ahf:8045/servicediscovery";
-    public static String orchestrationManagementEndpoint = "https://127.0.0.1:8181/orchestration/mgmt/orchestration-mgmt";
-    public static String orchestrationStoreEndpoint = "https://127.0.0.1:8181/orchestration/store/orchestration";
-    public static String authorisationControlEndpoint = "http://127.0.0.1:8080/authorisation";
-    public static String authorisationConfigurationEndpoint = "https://127.0.0.1:8181/authorisation-control";
+    public static String orchestrationManagementEndpoint = "https://glassfish.docker.ahf:8181/orchestration/mgmt/orchestration-mgmt";
+    public static String orchestrationStoreEndpoint = "https://glassfish.docker.ahf:8181/orchestration/store/orchestration";
+    public static String authorisationControlEndpoint = "https://glassfish.docker.ahf:8181/authorisation-control";
+    public static String authorisationConfigurationEndpoint = "http://glassfish.docker.ahf:8080/authorisation";
 
     private static Map<String, String> argumentMap;
 
