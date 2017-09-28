@@ -1,10 +1,7 @@
 package se.ltu.ahf.docker.proxies.coap;
 
 import org.eclipse.californium.core.CoapServer;
-import se.ltu.ahf.docker.proxies.coap.resources.simpleservicediscovery.publish.ServicePublishResource;
-import se.ltu.ahf.docker.proxies.coap.resources.simpleservicediscovery.service.ServiceInformationResource;
-import se.ltu.ahf.docker.proxies.coap.resources.simpleservicediscovery.type.ServiceTypeResource;
-import se.ltu.ahf.docker.proxies.coap.resources.simpleservicediscovery.unpublish.ServiceUnpublishResource;
+import se.ltu.ahf.docker.proxies.coap.resources.ProxyResource;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -32,14 +29,11 @@ public class CoapProxy {
                 .sslContext(Configuration.getSslContext())
                 .build();
 
-        ServiceInformationResource serviceInformationResource =
-                new ServiceInformationResource(httpClient, Configuration.serviceDiscoveryEndpoint);
-        ServicePublishResource servicePublishResource =
-                new ServicePublishResource(httpClient, Configuration.serviceDiscoveryEndpoint);
-        ServiceUnpublishResource serviceUnpublishResource =
-                new ServiceUnpublishResource(httpClient, Configuration.serviceDiscoveryEndpoint);
-        ServiceTypeResource serviceTypeResource =
-                new ServiceTypeResource(httpClient, Configuration.serviceDiscoveryEndpoint);
+        String sddEndpoint = Configuration.serviceDiscoveryEndpoint;
+        ProxyResource serviceInformationResource = new ProxyResource("service", httpClient, sddEndpoint);
+        ProxyResource servicePublishResource = new ProxyResource("publish", httpClient, sddEndpoint);
+        ProxyResource serviceUnpublishResource = new ProxyResource("unpublish", httpClient, sddEndpoint);
+        ProxyResource serviceTypeResource = new ProxyResource("type", httpClient, sddEndpoint);
 
         CoapServer server = new CoapServer(Configuration.port)
                 .add(serviceInformationResource)
