@@ -49,6 +49,28 @@ Apart from this file, you can find `api.html`, which contains a simple page
 listing all the available endpoints. For most of these, the auto-generator was
 capable of including body examples (payloads) where necessary.
 
+## Other useful commands
+
+* To get the data from a volume called `tls`.
+```bash
+sudo cp -far "$(docker volume inspect tls | 
+    grep Mountpoint | 
+    sed -E 's/^\s*"\w*"\s*:\s*"(.*)".*$/\1/g')/." . && \
+    sudo chown -R $USER:$USER .
+```
+
+* Clean up Docker:
+```bash
+docker system prune -a
+```
+
+* Completely clean up Docker (factory defaults / hard reset):
+```bash
+ sudo su -c "service docker stop &&
+ rm -r /var/lib/docker/* &&
+ service docker start"
+```
+
 ## Environment Variables
 Any of the properties accepted by the Arrowhead Core 4.0 Lightweight application
 can be overridden by using an environment variable of the same name (but in

@@ -27,6 +27,21 @@ A modified version of this file has been [https://app.swaggerhub.com/apis/arrowh
 
 Apart from this file, you can find <code>api.html</code>, which contains a simple page listing all the available endpoints. For most of these, the auto-generator was capable of including body examples (payloads) where necessary.
 
+== Other useful commands ==
+
+<ul>
+<li><p>To get the data from a volume called <code>tls</code>.</p>
+<pre>sudo cp -far &quot;$(docker volume inspect tls | 
+grep Mountpoint | 
+sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
+sudo chown -R $USER:$USER .</pre></li>
+<li><p>Clean up Docker:</p>
+<pre>docker system prune -a</pre></li>
+<li><p>Completely clean up Docker (factory defaults / hard reset):</p>
+<pre> sudo su -c &quot;service docker stop &amp;&amp;
+ rm -r /var/lib/docker/* &amp;&amp;
+ service docker start&quot;</pre></li></ul>
+
 == Environment Variables ==
 
 Any of the properties accepted by the Arrowhead Core 4.0 Lightweight application can be overridden by using an environment variable of the same name (but in uppercase and substituting dots by underscores).

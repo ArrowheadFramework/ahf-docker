@@ -61,6 +61,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>You can find a <a href="https://swagger.io/">Swagger</a> file called <code>arrowhead-core.json</code> which can be imported into SoapUI, Postman and other tools to generate client source code for different languages. For more information refer to <code>src/tools/generate-swagger/doc</code>.</p>
 <p>A modified version of this file has been <a href="https://app.swaggerhub.com/apis/arrowhead-f/arrowhead-4_0_core/4.0">published on SwaggerHub</a>.</p>
 <p>Apart from this file, you can find <code>api.html</code>, which contains a simple page listing all the available endpoints. For most of these, the auto-generator was capable of including body examples (payloads) where necessary.</p>
+<h2 id="other-useful-commands">Other useful commands</h2>
+<ul>
+<li><p>To get the data from a volume called <code>tls</code>.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> cp -far <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">docker</span> volume inspect tls <span class="kw">|</span> 
+<span class="kw">grep</span> Mountpoint <span class="kw">|</span> 
+<span class="kw">sed</span> -E <span class="st">'s/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g'</span><span class="ot">)</span><span class="st">/.&quot;</span> . <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+<span class="kw">sudo</span> chown -R <span class="ot">$USER</span>:<span class="ot">$USER</span> .</code></pre></div></li>
+<li><p>Clean up Docker:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> system prune -a</code></pre></div></li>
+<li><p>Completely clean up Docker (factory defaults / hard reset):</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"> <span class="kw">sudo</span> su -c <span class="st">&quot;service docker stop &amp;&amp;</span>
+<span class="st"> rm -r /var/lib/docker/* &amp;&amp;</span>
+<span class="st"> service docker start&quot;</span></code></pre></div></li>
+</ul>
 <h2 id="environment-variables">Environment Variables</h2>
 <p>Any of the properties accepted by the Arrowhead Core 4.0 Lightweight application can be overridden by using an environment variable of the same name (but in uppercase and substituting dots by underscores).</p>
 <p>For example, to set the property <code>ttl_interval</code>, we would use the environment variable <code>TTL_INTERVAL</code> as follows</p>
