@@ -25,13 +25,13 @@ commands](#other-useful-commands)**.
 ### Run
 With GIT, Docker and Docker-Compose installed:
 ```bash
-cd core
+cd src/core
 docker-compose up --build && docker-compose down -v
 ```
 
 ### Test 
 ```bash
-cd soapui
+cd src/soapui
 docker-compose up --build && docker-compose down -v
 ```
 
@@ -191,7 +191,7 @@ credentials (default are admin:pass).
 
 To start an instance of the DNS server (`bind`) without docker-compose.
 ```bash
-docker build -t ahf-bind core/bind
+docker build -t ahf-bind src/core/bind
 docker network create ahf
 docker run --rm \
            --network ahf \
@@ -208,7 +208,7 @@ docker run --rm \
 To start an instance of the application server (`glassfish`) without
 docker-compose.
 ```bash
-docker build -t ahf-glassfish core/glassfish
+docker build -t ahf-glassfish src/core/glassfish
 docker network create ahf
 docker run --rm \
            --network ahf \
@@ -236,7 +236,7 @@ docker run --rm \
 To start an instance of the service registry proxy (`simpleservicediscovery`)
 without docker-compose.
 ```bash
-docker build -t ahf-ssd core/simpleservicediscovery
+docker build -t ahf-ssd src/core/simpleservicediscovery
 docker network create ahf
 docker run --rm \
            --network ahf \
@@ -259,7 +259,7 @@ docker run --rm \
 
 To run the SoapUI test suite without docker-compose.
 ```bash
-docker build -t ahf-soapui soapui
+docker build -t ahf-soapui src/soapui
 docker run --rm \
            --volume tls:/tls \
            --volume tsig:/tsig \
