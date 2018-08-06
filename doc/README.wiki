@@ -112,95 +112,92 @@ In your explorer you may use this tool. Head to <code>http://127.0.0.1:8080/mana
 
 == Other useful commands ==
 
-To start an instance of the DNS server (<code>bind</code>) without docker-compose.
-
+<ul>
+<li><p>To start an instance of the DNS server (<code>bind</code>) without docker-compose.</p>
 <pre>docker build -t ahf-bind src/core/bind
 docker network create ahf
 docker run --rm \
-           --network ahf \
-           --volume tsig:/tsig \
-           --hostname bind.docker.ahf \
-           --net-alias bind.docker.ahf \
-           --env ALLOW_DOMAIN_UPDATE=true \
-           --env SERVER_DOMAIN=docker.ahf \
-           --env SERVER_HOSTNAME=bind.docker.ahf \
-           --publish 53:53/udp \
-           --name ahf-bind ahf-bind</pre>
-To start an instance of the application server (<code>glassfish</code>) without docker-compose.
-
+       --network ahf \
+       --volume tsig:/tsig \
+       --hostname bind.docker.ahf \
+       --net-alias bind.docker.ahf \
+       --env ALLOW_DOMAIN_UPDATE=true \
+       --env SERVER_DOMAIN=docker.ahf \
+       --env SERVER_HOSTNAME=bind.docker.ahf \
+       --publish 53:53/udp \
+       --name ahf-bind ahf-bind</pre></li>
+<li><p>To start an instance of the application server (<code>glassfish</code>) without docker-compose.</p>
 <pre>docker build -t ahf-glassfish src/core/glassfish
 docker network create ahf
 docker run --rm \
-           --network ahf \
-           --volume tls:/tls \
-           --volume tsig:/tsig \
-           --hostname glassfish.docker.ahf \
-           --net-alias glassfish.docker.ahf \
-           --net-alias docker \
-           --env LOCK_OUT_DIR=false \
-           --env GLASSFISH_ADMIN=admin \
-           --env GLASSFISH_PASSWORD=password \
-           --env KEYSTORE_PASSWORD=changeit \
-           --env TESTER_KEYSTORE_PASSWORD=changeit \
-           --env DNS_SERVER=bind.docker.ahf \
-           --env SECURE_GLASSFISH=true \
-           --env SERVER_HOSTNAME=glassfish.docker.ahf \
-           --env SERVER_DOMAIN=docker.ahf \
-           --env REGISTER_WITH_DNS=true \
-           --env DO_DYNAMIC_DNS_UPDATE=true \
-           --publish 8080:8080 \
-           --publish 8181:8181 \
-           --name=ahf-glassfish ahf-glassfish</pre>
-To start an instance of the service registry proxy (<code>simpleservicediscovery</code>) without docker-compose.
-
+       --network ahf \
+       --volume tls:/tls \
+       --volume tsig:/tsig \
+       --hostname glassfish.docker.ahf \
+       --net-alias glassfish.docker.ahf \
+       --net-alias docker \
+       --env LOCK_OUT_DIR=false \
+       --env GLASSFISH_ADMIN=admin \
+       --env GLASSFISH_PASSWORD=password \
+       --env KEYSTORE_PASSWORD=changeit \
+       --env TESTER_KEYSTORE_PASSWORD=changeit \
+       --env DNS_SERVER=bind.docker.ahf \
+       --env SECURE_GLASSFISH=true \
+       --env SERVER_HOSTNAME=glassfish.docker.ahf \
+       --env SERVER_DOMAIN=docker.ahf \
+       --env REGISTER_WITH_DNS=true \
+       --env DO_DYNAMIC_DNS_UPDATE=true \
+       --publish 8080:8080 \
+       --publish 8181:8181 \
+       --name=ahf-glassfish ahf-glassfish</pre></li>
+<li><p>To start an instance of the service registry proxy (<code>simpleservicediscovery</code>) without docker-compose.</p>
 <pre>docker build -t ahf-ssd src/core/simpleservicediscovery
 docker network create ahf
 docker run --rm \
-           --network ahf \
-           --volume tls:/tls \
-           --volume tsig:/tsig \
-           --hostname simpleservicediscovery.docker.ahf \
-           --env DNS_SERVER=bind.docker.ahf \
-           --env BROWSING_DOMAIN=docker.ahf \
-           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
-           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
-           --env WAIT_FOR_TLS_READY=true \
-           --env WAIT_FOR_ORCH_STORE=true \
-           --env SERVER_HOSTNAME=simpleservicediscovery.docker.ahf \
-           --env SERVER_DOMAIN=docker.ahf \
-           --env REGISTER_WITH_DNS=true \
-           --env DO_DYNAMIC_DNS_UPDATE=true \
-           --publish 8045:8045 \
-           --name=ahf-ssd ahf-ssd</pre>
-To run the SoapUI test suite without docker-compose.
-
+       --network ahf \
+       --volume tls:/tls \
+       --volume tsig:/tsig \
+       --hostname simpleservicediscovery.docker.ahf \
+       --env DNS_SERVER=bind.docker.ahf \
+       --env BROWSING_DOMAIN=docker.ahf \
+       --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+       --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+       --env WAIT_FOR_TLS_READY=true \
+       --env WAIT_FOR_ORCH_STORE=true \
+       --env SERVER_HOSTNAME=simpleservicediscovery.docker.ahf \
+       --env SERVER_DOMAIN=docker.ahf \
+       --env REGISTER_WITH_DNS=true \
+       --env DO_DYNAMIC_DNS_UPDATE=true \
+       --publish 8045:8045 \
+       --name=ahf-ssd ahf-ssd</pre></li>
+<li><p>To run the SoapUI test suite without docker-compose.</p>
 <pre>docker build -t ahf-soapui src/soapui
 docker run --rm \
-           --volume tls:/tls \
-           --volume tsig:/tsig \
-           --hostname soapui.docker.ahf \
-           --network ahf \
-           --name=ahf-soapui ahf-soapui</pre>
-To get the auto-generated TLS files, including the Certificate Authority certificate and key.
+       --volume tls:/tls \
+       --volume tsig:/tsig \
+       --hostname soapui.docker.ahf \
+       --network ahf \
+       --name=ahf-soapui ahf-soapui</pre></li>
+<li><p>To get the auto-generated TLS files, including the Certificate Authority certificate and key.</p></li></ul>
 
+<!-- -->
 <pre>sudo cp -far &quot;$(docker volume inspect tls | 
     grep Mountpoint | 
     sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
     sudo chown -R $USER:$USER .</pre>
-To get the auto-generated TSIG file.
-
+<ul>
+<li><p>To get the auto-generated TSIG file.</p>
 <pre>sudo cp -far &quot;$(docker volume inspect tsig | 
-    grep Mountpoint | 
-    sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
-    sudo chown -R $USER:$USER .</pre>
-Clean up Docker:
-
-<pre>docker system prune -a</pre>
-Completely clean up Docker (factory defaults / hard reset):
-
+grep Mountpoint | 
+sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
+sudo chown -R $USER:$USER .</pre></li>
+<li><p>Clean up Docker:</p>
+<pre>docker system prune -a</pre></li>
+<li><p>Completely clean up Docker (factory defaults / hard reset):</p>
 <pre> sudo su -c &quot;service docker stop &amp;&amp;
  rm -r /var/lib/docker/* &amp;&amp;
- service docker start&quot;</pre>
+ service docker start&quot;</pre></li></ul>
+
 == More information ==
 
 You can find more information on the [https://forge.soa4d.org/plugins/mediawiki/wiki/arrowhead-f/index.php/Local_cloud_deployment#Using_Docker_containers Arrowhead Framework Wiki].

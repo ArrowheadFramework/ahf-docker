@@ -189,7 +189,7 @@ credentials (default are admin:pass).
 
 ## Other useful commands
 
-To start an instance of the DNS server (`bind`) without docker-compose.
+* To start an instance of the DNS server (`bind`) without docker-compose.
 ```bash
 docker build -t ahf-bind src/core/bind
 docker network create ahf
@@ -205,7 +205,7 @@ docker run --rm \
            --name ahf-bind ahf-bind
 ```
 
-To start an instance of the application server (`glassfish`) without
+* To start an instance of the application server (`glassfish`) without
 docker-compose.
 ```bash
 docker build -t ahf-glassfish src/core/glassfish
@@ -233,7 +233,7 @@ docker run --rm \
            --name=ahf-glassfish ahf-glassfish
 ```
 
-To start an instance of the service registry proxy (`simpleservicediscovery`)
+* To start an instance of the service registry proxy (`simpleservicediscovery`)
 without docker-compose.
 ```bash
 docker build -t ahf-ssd src/core/simpleservicediscovery
@@ -257,7 +257,7 @@ docker run --rm \
            --name=ahf-ssd ahf-ssd
 ```
 
-To run the SoapUI test suite without docker-compose.
+* To run the SoapUI test suite without docker-compose.
 ```bash
 docker build -t ahf-soapui src/soapui
 docker run --rm \
@@ -268,7 +268,7 @@ docker run --rm \
            --name=ahf-soapui ahf-soapui
 ```
 
-To get the auto-generated TLS files, including the Certificate Authority
+* To get the auto-generated TLS files, including the Certificate Authority
 certificate and key. 
 
 ```bash
@@ -278,7 +278,7 @@ sudo cp -far "$(docker volume inspect tls |
     sudo chown -R $USER:$USER .
 ```
 
-To get the auto-generated TSIG file.
+* To get the auto-generated TSIG file.
 ```bash
 sudo cp -far "$(docker volume inspect tsig | 
     grep Mountpoint | 
@@ -286,12 +286,12 @@ sudo cp -far "$(docker volume inspect tsig |
     sudo chown -R $USER:$USER .
 ```
 
-Clean up Docker:
+* Clean up Docker:
 ```bash
 docker system prune -a
 ```
 
-Completely clean up Docker (factory defaults / hard reset):
+* Completely clean up Docker (factory defaults / hard reset):
 ```bash
  sudo su -c "service docker stop &&
  rm -r /var/lib/docker/* &&
