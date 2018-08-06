@@ -1,0 +1,185 @@
+= ahf-docker =
+
+**Disclaimer:* This is work in progress (WIP). Please submit [https://forge.soa4d.org/tracker/?atid=304&group_id=58&func=browse here] any issues you find.*
+
+== Overview ==
+
+This repository contains Docker containers for the Arrowhead project (subject to its corresponding license). These containers allow for quicker development without the need for connecting to an existing ''local cloud''. Currently, these containers are at an alpha stage. Please submit any issues you find or enhancements you would like to see.
+
+== Usage ==
+
+=== Requirements ===
+
+Docker is required to run these containers. Installing Docker-Compose as well will make it easier to get started quickly.
+
+The following instructions use <code>docker-compose</code>, but if you prefer not to use it, you can find the corresponding commands under '''[[#other-useful-commands|Other useful commands]]'''.
+
+=== Run ===
+
+With GIT, Docker and Docker-Compose installed:
+
+<pre>cd core
+docker-compose up --build &amp;&amp; docker-compose down -v</pre>
+=== Test ===
+
+<pre>cd soapui
+docker-compose up --build &amp;&amp; docker-compose down -v</pre>
+'''Note for Windows:''' Docker might ask for your credentials to share your drive. This is necessary to output the TSIG file to the host. You may remove this behaviour by editing the <code>docker-compose.yml</code> file and removing any <code>volumes</code> entries and their children.
+
+== Connecting from a Java application ==
+
+To make calls to the services from a Java application, and specifically, if you are using the core-utils library, you will need to provide the JVM with the following parameters:
+
+<pre>-Ddns.server=&lt;IP_of_the_docker_interface&gt;
+-Ddnssd.hostname=&lt;ip_or_name_holding_your_service&gt;
+-Ddnssd.domain=srv.docker.ahf.
+-Ddnssd.browsingDomains=srv.docker.ahf.
+-Ddnssd.registerDomain=srv.docker.ahf.
+-Ddnssd.tsig=&quot;&lt;tsig_file_location&gt;&quot;</pre>
+If you are using an older version of core-utils, the JVM parameters might be different:
+
+<pre>-Ddns.server=&lt;IP_of_the_docker_interface&gt;
+-Ddnssd.hostname=&lt;ip_or_name_holding_your_service&gt;
+-Ddnssd.domain=docker.ahf.
+-Ddnssd.browsingDomains=docker.ahf.
+-Ddns.registerDomain=docker.ahf.
+-Ddnssd.tsig=&quot;&lt;tsig_file_location&gt;&quot;</pre>
+=== Connection and security ===
+
+To connect to services running in your own computer you may use the <code>127.0.0.1</code> local IP along with the corresponding service port. Docker sets up the necessary bindings for the corresponding containers.
+
+If you wish to connect to the services from external machines, you may use the host's IP address. If there are any issues, you should check your firewall and, in Linux, the setting of <code>net.ipv4.conf.all.forwarding</code>.
+
+You may also use that system parameter if you wish to restrict services to only be accessible by the host running the containers. To do this, you would run the following command (which you can change at any point during runtime without having to restart the containers):
+
+<pre>sudo sysctl net.ipv4.conf.all.forwarding=0</pre>
+Alternatively, you may set up rules in your firewall, but that is beyond the scope of this document.
+
+==== Certificates, keys and TSIG ====
+
+When the containers are run with <code>docker-compose</code> or with the suggested parameters, they will create directories called <code>tls</code> and <code>tsig</code>. These contain helpful files such as a CA certificate with its key, along with a signed testing certificate, as well as a file with the TSIG key.To use these files outside of docker, the proper permissions should be set. Docker does not have information about your user so it cannot give you permissions.
+
+To help you out in fast development, the containers will automatically set lax permissions for these folders and their contents (777). THIS IS INSECURE and will not be done unless you explicitly set the <code>LOCK_OUT_DIR</code> environment variable to false.
+
+To help out anyone who wants to get things up and running quickly, this <code>LOCK_OUT_DIR</code> is set to false in the core docker-compose file. Modify it as needed.
+
+=== TSIG ===
+
+The TSIG file is used by the DNS server to autheticate update requests. It is made available after starting the container for easy usage with core-utils. It can be located in <code>./out/tsig</code>. If you need to modify it for any reasons, it should maintain the following format used by core-utils at least up to version 1.7.
+
+<pre>key.docker.ahf.
+&lt;key&gt;</pre>
+''The TSIG key usage can currently be bypassed. This is an alpha release. Please do not use if security is a concern. ''(If necessary, though, TSIG usage can be easily enforced by editing the named.conf.template file)**
+
+== SimpleServiceDiscovery ==
+
+Systems without DNS-SD capabilities might consider using the SimpleServiceDiscovery service which is included. [https://bitbucket.org/fedeselmer/simpleservicediscovery/ Developed by Federico Montori and Hasan Derhamy], this service provides a REST API for performing operations on the service registry.
+
+The docker compose configuration will automatically deploy it. The corresponding files are located in the <code>simpleservicediscovery</code> directory.
+
+To test it, you may perform a simple query as follows:
+
+<pre>curl 127.0.0.1:8045/servicediscovery/service</pre>
+The rest of the API will be documented here soon. For the time being please refer to the repository linked above.
+
+== Testing ==
+
+Correct deployment of the different components can be quickly tested as follows. These commands assume you are currently at the <code>core</code> folder.
+
+=== Service Discovery ===
+
+This is only an EJB used by Orchestration and Authorisation, so there is no direct way to test it. You can, however check that it is deployed by using the following command. You will be asked to accept the server's certificate and to log in as the Glassfish administrator (default is admin:pass).
+
+<pre>docker exec -it \
+    core_glassfish_1 /glassfish3/glassfish/bin/asadmin list-applications</pre>
+=== Orchestration ===
+
+<pre>curl https://127.0.0.1:8181/orchestration/store/orchestration/configurations \
+    -k --cert tls/cert.pem:changeit -i</pre>
+=== Authorisation ===
+
+This one is actually not working at the moment:
+
+<pre>curl https://127.0.0.1:8181/authorisation/authorisation \
+    -k -i -X POST -H 'Content-Type: application/xml' \
+    -d '&lt;AuthorisationRequest&gt;&lt;serviceType/&gt;&lt;serviceName/&gt;&lt;distinguishedName/&gt;&lt;/AuthorisationRequest&gt;' \
+    --cert tls/cert.pem:changeit</pre>
+=== Management Tool ===
+
+In your explorer you may use this tool. Head to <code>http://127.0.0.1:8080/managementtool</code> and input the Glassfish administrator credentials (default are admin:pass).
+
+== Other useful commands ==
+
+To start an instance of the NTP server (<code>bind</code>) without docker-compose.
+
+<pre>docker build -t ahf-bind core/bind
+docker run --rm \
+           --volume tsig:/tsig \
+           --hostname bind.docker.ahf \
+           --net-alias bind.docker.ahf \
+           --network ahf \
+           --publish 53:53/udp \
+           --name ahf-bind ahf-bind</pre>
+To start an instance of the application server (<code>glassfish</code>) without docker-compose.
+
+<pre>docker build -t ahf-glassfish core/glassfish
+docker run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname glassfish.docker.ahf \
+           --net-alias glassfish.docker.ahf \
+           --net-alias docker \
+           --network ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env REGISTER_WITH_DNS=true \
+           --publish 8080:8080 \
+           --publish 8181:8181 \
+           --name=ahf-glassfish ahf-glassfish</pre>
+To start an instance of the service registry proxy (<code>simpleservicediscovery</code>) without docker-compose.
+
+<pre>docker build -t ahf-ssd core/simpleservicediscovery
+docker run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname simpleservicediscovery.docker.ahf \
+           --network ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env BROWSING_DOMAIN=docker.ahf \
+           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+           --env REGISTER_WITH_DNS=true \
+           --publish 8045:8045 \
+           --name=ahf-ssd ahf-ssd</pre>
+To run the SoapUI test suite without docker-compose.
+
+<pre>docker build -t ahf-soapui soapui
+docker run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname soapui.docker.ahf \
+           --network ahf \
+           --name=ahf-soapui ahf-soapui</pre>
+To get the auto-generated TLS files, including the Certificate Authority certificate and key.
+
+<pre>sudo cp -far &quot;$(docker volume inspect tls | 
+    grep Mountpoint | 
+    sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
+    sudo chown -R $USER:$USER .</pre>
+To get the auto-generated TSIG file.
+
+<pre>sudo cp -far &quot;$(docker volume inspect tsig | 
+    grep Mountpoint | 
+    sed -E 's/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g')/.&quot; . &amp;&amp; \
+    sudo chown -R $USER:$USER .</pre>
+Clean up Docker:
+
+<pre>docker system prune -a</pre>
+Completely clean up Docker (factory defaults / hard reset):
+
+<pre> sudo su -c &quot;service docker stop &amp;&amp;
+ rm -r /var/lib/docker/* &amp;&amp;
+ service docker start&quot;</pre>
+== Disclaimer ==
+
+''This might open ports in your computer. Please refer to the [[#connection-and-security|Connection and security]] section''
+

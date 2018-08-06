@@ -1,0 +1,56 @@
+# named.conf template
+# tags used 
+# host-ip = <host-ip>
+# local domain = <localdomain>
+# key = <srv-key>
+# reverse lookup domain = <rev-localdomain>
+# mexs domain = <mexsdomain>
+# allow domain update = <domain_update_allow>
+
+options {
+#	listen-on port 53 { 127.0.0.1; <host-ip>; };
+	directory 	"/var/named";
+	dump-file 	"/var/named/data/cache_dump.db";
+	statistics-file "/var/named/data/named_stats.txt";
+	memstatistics-file "/var/named/data/named_mem_stats.txt";
+	allow-query     { any; };
+	recursion yes;
+	managed-keys-directory "/var/named/dynamic";
+};
+
+#logging {
+#        channel default_debug {
+#                file "/var/named/data/named.run";
+#                severity dynamic;
+#        };
+#};
+
+zone "." IN {
+	type master;
+	file "root";
+};
+
+# TODO: Consider moving to dynamic when allowing updates.
+zone "<localdomain>" IN {
+	type master;
+	file "<localdomain>";
+	allow-update { <domain_update_allow>; };
+};
+
+zone "<rev-localdomain>" IN {
+	type master;
+	file "<rev-localdomain>";
+};
+
+
+zone "srv.<localdomain>" IN {
+	type master;
+	file "dynamic/srv.<localdomain>";
+#	allow-update { key key.<localdomain>; };
+	allow-update { any; };
+};
+
+key key.<localdomain>. {
+	algorithm hmac-md5;
+	secret "<srv-key>";
+};

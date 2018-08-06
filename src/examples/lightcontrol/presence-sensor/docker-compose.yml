@@ -1,0 +1,28 @@
+version: '3.2'
+services:
+  presencesensor:
+    build: .
+    dns: localhost 
+    dns_search: docker.ahf
+    environment:
+      PORT: 8091
+    ports:
+      - "8091:8091"
+    hostname: presencesensor1
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - presencesensor.docker.ahf
+volumes:
+  core_tls:
+    external:
+      name: core_tls
+networks:
+  ahf:
+    external:
+      name: core_ahf
+
+  

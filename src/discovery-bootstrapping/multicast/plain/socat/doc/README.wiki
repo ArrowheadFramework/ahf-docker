@@ -1,0 +1,115 @@
+= socat =
+
+This directory contains an application of <code>socat</code> for bootstrapping Arrowhead service discovery.
+
+= Usage =
+
+== Two local containers ==
+
+[Optional] Remove the Docker networks.
+
+<pre>docker network rm mcast_net</pre>
+[Optional] Create the networks.
+
+<pre>docker network create \
+            -d macvlan \
+            --subnet=192.168.0.0/24 \
+            --gateway=192.168.0.1 \
+            -o parent=wlp58s0 \
+            mcast_net</pre>
+Build the images.
+
+<pre>docker build --tag socat-bootstrap-server core/
+docker build --tag socat-bootstrap-client client/</pre>
+[Optional] Disable packet forwarding.
+
+<pre>sudo sysctl net.ipv4.conf.all.forwarding=0</pre>
+Run the containers.
+
+<pre>SERVER_ADDRESS=127.0.1.1
+[ -n &quot;SERVER_ADDRESS&quot; ] &amp;&amp; \
+docker run \
+       --rm \
+       --network mcast_net \
+       --ip 192.168.0.121 \
+       --env URI=&quot;http://glassfish.docker.ahf:8080/simpleservicediscovery&quot; \
+       --env IP_ADDRESS=&quot;${SERVER_ADDRESS}&quot; \
+       --env MCAST_INTERFACE=&quot;192.168.0.121&quot; \
+       --name socat-bootstrap-server \
+       socat-bootstrap-server
+docker run \
+       --rm \
+       --network mcast_net \
+       --ip 192.168.0.122 \
+       --name socat-bootstrap-client \
+       --env OUTPUT_FILENAME=&quot;bootstrap&quot; \
+       --volume bootstrapping:/out \
+       socat-bootstrap-client</pre>
+== Publish the DNS address for core docker-compose ==
+
+<pre>SERVER_ADDRESS=$(docker inspect -f &quot;{{ .NetworkSettings.Networks.core_ahf.IPAddress }}&quot; core_bind_1)
+[ -n &quot;SERVER_ADDRESS&quot; ] &amp;&amp; \
+docker run \
+       --rm \
+       --network mcast_net \
+       --ip 192.168.0.121 \
+       --env URI_SCHEME=&quot;dns&quot; \
+       --env URI_HOST=&quot;${SERVER_ADDRESS}&quot; \
+       --env IP_ADDRESS=&quot;${SERVER_ADDRESS}&quot; \
+       --env MCAST_INTERFACE=&quot;192.168.0.121&quot; \
+       --name socat-bootstrap-server \
+       socat-bootstrap-server</pre>
+[Optional] Re-enable packet forwarding.
+
+<pre>sudo sysctl net.ipv4.conf.all.forwarding=1</pre>
+== Two resin devices ==
+
+[Optional] Remove the Docker networks.
+
+<pre>docker -H tcp://resin1.local:2375 network rm mcast_net
+docker -H tcp://resin2.local:2375 network rm mcast_net</pre>
+[Optional] Create the networks.
+
+<pre>docker -H tcp://resin1.local:2375 network create \
+                         -d macvlan \
+                         --subnet=192.168.0.0/24 \
+                         --gateway=192.168.0.1 \
+                         -o parent=eth0 \
+                         mcast_net
+docker -H tcp://resin2.local:2375 network create \
+                         -d macvlan \
+                         --subnet=192.168.0.0/24 \
+                         --gateway=192.168.0.1 \
+                         -o parent=eth0 \
+                         mcast_net</pre>
+Build the images.
+
+<pre>docker -H tcp://resin1.local:2375 build \
+                    --tag socat-bootstrap-server core/
+docker -H tcp://resin2.local:2375 build \
+                    --tag socat-bootstrap-client client/</pre>
+Run the containers.
+
+<pre>SERVER_ADDRESS=$(ping resin1.local -c 1 | sed -n 1p | cut -d&quot;(&quot; -f2 | cut -d&quot;)&quot; -f1)
+[ -n &quot;SERVER_ADDRESS&quot; ] &amp;&amp; \
+docker -H tcp://resin1.local:2375 run \
+           --rm \
+           --network mcast_net \
+           --ip 192.168.0.121 \
+           --env URI=&quot;http://glassfish.docker.ahf:8080/simpleservicediscovery&quot; \
+           --env IP_ADDRESS=&quot;${SERVER_ADDRESS}&quot; \
+           --env MCAST_INTERFACE=&quot;0.0.0.0&quot; \
+           --name socat-bootstrap-server \
+           socat-bootstrap-server
+docker -H tcp://resin2.local:2375 run \
+           --rm \
+           --network mcast_net \
+           --ip 192.168.0.122 \
+           --name socat-bootstrap-client \
+           --env OUTPUT_FILENAME=&quot;bootstrap&quot; \
+           --volume bootstrapping:/out \
+           socat-bootstrap-client</pre>
+== Third-party licensing ==
+
+Full licenses under <code>LICENSES-3rd</code>.
+

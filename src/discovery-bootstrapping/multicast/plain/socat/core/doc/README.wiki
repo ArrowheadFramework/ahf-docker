@@ -1,0 +1,168 @@
+= socat-bootstrap-server =
+
+Server-side of the socat-based Arrowhead service discovery bootstrapper.
+
+This bootstrapper opens a UDP socket on a given port listening for multicast messages from a given group. It will respond to any messages from said group. The response will be the URI of the service to be published (Service Registry).
+
+In the scenario where not enough information is available to form a proper URI, at least a host will be published. The value for the host would depend on the value of <code>URI_HOST</code>.
+
+== Usage ==
+
+<pre>docker build -t ws-discovery-server .
+docker run \
+        --rm \
+        --network host \
+        --env URI_SCHEME=&quot;http&quot; \
+        --env URI_PORT=8080 \
+        --env URI_PATH=&quot;/simpleservicediscovery&quot; \
+        --env PUBLISH_INTERFACE_NAME=&quot;eth0&quot; \
+        --env MCAST_INTERFACE=&quot;0.0.0.0&quot; \
+        --name socat-bootstrap-server \
+        socat-bootstrap-server</pre>
+== Environment variables ==
+
+=== Service information ===
+
+==== URI related variables ====
+
+These variables are used to determine the URI of the service to be published. The URI related variables refer to the formal URI format as follows:
+
+<pre>scheme:[//[user[:password]@]host[:port]][/path][?query][#fragment]</pre>
+If only the host part is available, it will be printed as is (not as a URI). This might be changed in the future.
+
+If <code>URI</code> is set, the following variables are ignored: <code>URI_SCHEME</code>, <code>URI_HOST</code>, <code>URI_PORT</code>, <code>URI_PATH</code>, <code>PUBLISH_INTERFACE_NAME</code>.
+
+===== URI =====
+
+URI to be published. If set, the rest of the URI related variables are ignored.
+
+If not set, it will be formed through the rest of the URI variables. If no URI related variables are given, a best effort is made by using the IP address used for external connections by the container (which depends on the container's network configuration).
+
+* '''No default'''.
+* '''Optional'''.
+
+===== URI_SCHEME =====
+
+Scheme part of the URI for the service to be published. For example: <code>https</code>, <code>coap</code>.
+
+It is not used if <code>URI</code> is given.
+
+* '''No default'''.
+* '''Optional'''.
+
+===== URI_HOST =====
+
+Host part of the URI for the service to be published. For example: <code>192.168.0.110</code>.
+
+It is not used if <code>URI</code> is given.
+
+* '''No default'''.
+* '''Optional'''.
+
+===== URI_PORT =====
+
+Port part of the URI for the service to be published. For example: <code>8181</code>.
+
+It is not used if <code>URI</code> is given.
+
+* '''No default'''.
+* '''Optional'''.
+
+===== URI_PATH =====
+
+Path part of the URI for the service to be published. For example: <code>/simpleservicediscovery</code>.
+
+Please note that the path part of a URI is always prepended by a slash ('/'). When assigning a value to this variable it is assumed you have included this.
+
+It is not used if <code>URI</code> is given.
+
+* '''No default'''.
+* '''Optional'''.
+
+===== PUBLISH_INTERFACE_NAME =====
+
+If <code>URI_HOST</code> is unset, the IP address of the interface with the given name will be used as the host part of the URI.
+
+Example value: <code>eth0</code>
+
+It is not used if <code>URI</code> or <code>URI_HOST</code> are given.
+
+* '''No default'''.
+* '''Optional'''.
+
+=== IP_ADDRESS ===
+
+This variable is used to determine the IP address for the service to be published. If the value is not given, the IP address of the interface by the name <code>PUBLISH_INTERFACE_NAME</code> will be used. If both variables are empty, the IP address used by the primary external route for the container would be used.
+
+Example value: <code>127.0.0.1</code>
+
+* '''No default'''.
+* '''Optional'''.
+
+=== Multicast related variables ===
+
+These variables describe the multicast configuration of the bootstrapper.
+
+==== MCAST_INTERFACE ====
+
+Determines the interface on which socat will listen for multicast messages.
+
+* '''Default''': <code>0.0.0.0</code> only if <code>MCAST_INTERFACE_NAME</code> is also unset.
+* '''Optional'''.
+
+==== MCAST_INTERFACE_NAME ====
+
+If <code>MCAST_INTERFACE</code> is unset, the IP address of the interface with the given name will be used for listening to multicast messages.
+
+Example value: <code>eth0</code>
+
+It is not used if <code>MCAST_INTERFACE</code> is given.
+
+* '''No default'''.
+* '''Optional'''.
+
+==== MCAST_GROUP ====
+
+Determines the group on which socat will listen for multicast messages.
+
+* '''Default''': <code>224.1.0.1</code>
+* '''Optional'''.
+
+==== MCAST_UDP_PORT ====
+
+Determines the UDP port on which socat will listen for multicast messages.
+
+* '''Default''': <code>6666</code>
+* '''Optional'''.
+
+== Using Macvlan ==
+
+In case you prefer not to use <code>--network host</code>, you may use a macvlan network driver which should allow you to perform multicast from Docker if your engine supports it.
+
+The network interface information should be acquired by using your operating system's tools (e.g. <code>ip address</code>)
+
+<ul>
+<li><p>Remove the network if you have done this before and want to reconfigure, otherwise skip.</p>
+<pre>docker network rm mcast_net</pre></li>
+<li><p>Create the network (get the information from your OS). The name of the network is <code>mcast_net</code>, you may change that to anything you prefer.</p>
+<pre>docker network create -d macvlan \
+        -o parent=eth0 \
+        --subnet=192.168.0.0/24 \
+        --gateway=192.168.0.1 \
+        mcast_net</pre></li>
+<li><p>Re-build the container if necessary (note that the build step is independent of the network you will use when running it).</p>
+<pre>docker build -t socat-bootstrap-server .</pre></li>
+<li><p>Run the container selecting the created network and an IP which falls under the correct network segment (e.g. your current IP + 10).</p>
+<pre>IP_ADDRESS=$(ip route get 1 | awk '{print $NF;exit}')
+docker run \
+    --rm \
+    --network mcast_net \
+    --ip 192.168.0.121 \
+    --env URI=&quot;http://glassfish.docker.ahf:8080/simpleservicediscovery&quot; \
+    --env IP_ADDRESS=&quot;${IP_ADDRESS}&quot; \
+    --env MCAST_INTERFACE=&quot;0.0.0.0&quot; \
+    --name socat-bootstrap-server \
+    socat-bootstrap-server</pre></li></ul>
+
+Above we get our public IP address and configure our container to publish that instead of the one we gave it using macvlan.
+

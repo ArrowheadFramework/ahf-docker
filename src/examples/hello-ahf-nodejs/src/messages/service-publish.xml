@@ -1,0 +1,17 @@
+<service> 
+    <domain>docker.ahf</domain>
+    <host>hello.docker.ahf</host>
+    <name>hello-ahf</name>
+    <port>3111</port>
+    <properties>
+    <property>
+       <name>version</name>
+       <value>1.0</value>
+    </property>
+    <property>
+       <name>path</name>
+       <value>/hello</value>
+    </property>
+    </properties>
+    <type>_hello-rest-http._tcp</type>
+</service>

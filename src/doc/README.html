@@ -1,0 +1,183 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link href="data:text/css;charset=utf-8,%0Ahtml%20%7B%0Afont%2Dsize%3A%20100%25%3B%0Aoverflow%2Dy%3A%20scroll%3B%0A%2Dwebkit%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%2Dms%2Dtext%2Dsize%2Dadjust%3A%20100%25%3B%0A%7D%0Abody%20%7B%0Acolor%3A%20%23444%3B%0Afont%2Dfamily%3A%20Georgia%2C%20Palatino%2C%20%27Palatino%20Linotype%27%2C%20Times%2C%20%27Times%20New%20Roman%27%2C%20serif%3B%0Afont%2Dsize%3A%2012px%3B%0Aline%2Dheight%3A%201%2E7%3B%0Apadding%3A%201em%3B%0Amargin%3A%20auto%3B%0Amax%2Dwidth%3A%2042em%3B%0Abackground%3A%20%23fefefe%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230645ad%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%230b0080%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%2306e%3B%0A%7D%0Aa%3Aactive%20%7B%0Acolor%3A%20%23faa700%3B%0A%7D%0Aa%3Afocus%20%7B%0Aoutline%3A%20thin%20dotted%3B%0A%7D%0A%2A%3A%3A%2Dmoz%2Dselection%20%7B%0Abackground%3A%20rgba%28255%2C%20255%2C%200%2C%200%2E3%29%3B%0Acolor%3A%20%23000%3B%0A%7D%0A%2A%3A%3Aselection%20%7B%0Abackground%3A%20rgba%28255%2C%20255%2C%200%2C%200%2E3%29%3B%0Acolor%3A%20%23000%3B%0A%7D%0Aa%3A%3A%2Dmoz%2Dselection%20%7B%0Abackground%3A%20rgba%28255%2C%20255%2C%200%2C%200%2E3%29%3B%0Acolor%3A%20%230645ad%3B%0A%7D%0Aa%3A%3Aselection%20%7B%0Abackground%3A%20rgba%28255%2C%20255%2C%200%2C%200%2E3%29%3B%0Acolor%3A%20%230645ad%3B%0A%7D%0Ap%20%7B%0Amargin%3A%201em%200%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Ah1%2C%20h2%2C%20h3%2C%20h4%2C%20h5%2C%20h6%20%7B%0Acolor%3A%20%23111%3B%0Aline%2Dheight%3A%20125%25%3B%0Amargin%2Dtop%3A%202em%3B%0Afont%2Dweight%3A%20normal%3B%0A%7D%0Ah4%2C%20h5%2C%20h6%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Ah1%20%7B%0Afont%2Dsize%3A%202%2E5em%3B%0A%7D%0Ah2%20%7B%0Afont%2Dsize%3A%202em%3B%0A%7D%0Ah3%20%7B%0Afont%2Dsize%3A%201%2E5em%3B%0A%7D%0Ah4%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0A%7D%0Ah5%20%7B%0Afont%2Dsize%3A%201em%3B%0A%7D%0Ah6%20%7B%0Afont%2Dsize%3A%200%2E9em%3B%0A%7D%0Ablockquote%20%7B%0Acolor%3A%20%23666666%3B%0Amargin%3A%200%3B%0Apadding%2Dleft%3A%203em%3B%0Aborder%2Dleft%3A%200%2E5em%20%23EEE%20solid%3B%0A%7D%0Ahr%20%7B%0Adisplay%3A%20block%3B%0Aheight%3A%202px%3B%0Aborder%3A%200%3B%0Aborder%2Dtop%3A%201px%20solid%20%23aaa%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23eee%3B%0Amargin%3A%201em%200%3B%0Apadding%3A%200%3B%0A%7D%0Apre%2C%20code%2C%20kbd%2C%20samp%20%7B%0Acolor%3A%20%23000%3B%0Afont%2Dfamily%3A%20monospace%2C%20monospace%3B%0A%5Ffont%2Dfamily%3A%20%27courier%20new%27%2C%20monospace%3B%0Afont%2Dsize%3A%200%2E98em%3B%0A%7D%0Apre%20%7B%0Awhite%2Dspace%3A%20pre%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%0Aword%2Dwrap%3A%20break%2Dword%3B%0A%7D%0Ab%2C%20strong%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Adfn%20%7B%0Afont%2Dstyle%3A%20italic%3B%0A%7D%0Ains%20%7B%0Abackground%3A%20%23ff9%3B%0Acolor%3A%20%23000%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Amark%20%7B%0Abackground%3A%20%23ff0%3B%0Acolor%3A%20%23000%3B%0Afont%2Dstyle%3A%20italic%3B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Asub%2C%20sup%20%7B%0Afont%2Dsize%3A%2075%25%3B%0Aline%2Dheight%3A%200%3B%0Aposition%3A%20relative%3B%0Avertical%2Dalign%3A%20baseline%3B%0A%7D%0Asup%20%7B%0Atop%3A%20%2D0%2E5em%3B%0A%7D%0Asub%20%7B%0Abottom%3A%20%2D0%2E25em%3B%0A%7D%0Aul%2C%20ol%20%7B%0Amargin%3A%201em%200%3B%0Apadding%3A%200%200%200%202em%3B%0A%7D%0Ali%20p%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aul%20ul%2C%20ol%20ol%20%7B%0Amargin%3A%20%2E3em%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dbottom%3A%201em%3B%0A%7D%0Adt%20%7B%0Afont%2Dweight%3A%20bold%3B%0Amargin%2Dbottom%3A%20%2E8em%3B%0A%7D%0Add%20%7B%0Amargin%3A%200%200%20%2E8em%202em%3B%0A%7D%0Add%3Alast%2Dchild%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Aimg%20%7B%0Aborder%3A%200%3B%0A%2Dms%2Dinterpolation%2Dmode%3A%20bicubic%3B%0Avertical%2Dalign%3A%20middle%3B%0A%7D%0Afigure%20%7B%0Adisplay%3A%20block%3B%0Atext%2Dalign%3A%20center%3B%0Amargin%3A%201em%200%3B%0A%7D%0Afigure%20img%20%7B%0Aborder%3A%20none%3B%0Amargin%3A%200%20auto%3B%0A%7D%0Afigcaption%20%7B%0Afont%2Dsize%3A%200%2E8em%3B%0Afont%2Dstyle%3A%20italic%3B%0Amargin%3A%200%200%20%2E8em%3B%0A%7D%0Atable%20%7B%0Amargin%2Dbottom%3A%202em%3B%0Aborder%2Dbottom%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dright%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dspacing%3A%200%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Abackground%2Dcolor%3A%20%23eee%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0A%7D%0Atable%20td%20%7B%0Apadding%3A%20%2E2em%201em%3B%0Aborder%2Dtop%3A%201px%20solid%20%23ddd%3B%0Aborder%2Dleft%3A%201px%20solid%20%23ddd%3B%0Avertical%2Dalign%3A%20top%3B%0A%7D%0A%2Eauthor%20%7B%0Afont%2Dsize%3A%201%2E2em%3B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20480px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2014px%3B%0A%7D%0A%7D%0A%40media%20only%20screen%20and%20%28min%2Dwidth%3A%20768px%29%20%7B%0Abody%20%7B%0Afont%2Dsize%3A%2016px%3B%0A%7D%0A%7D%0A%40media%20print%20%7B%0A%2A%20%7B%0Abackground%3A%20transparent%20%21important%3B%0Acolor%3A%20black%20%21important%3B%0Afilter%3A%20none%20%21important%3B%0A%2Dms%2Dfilter%3A%20none%20%21important%3B%0A%7D%0Abody%20%7B%0Afont%2Dsize%3A%2012pt%3B%0Amax%2Dwidth%3A%20100%25%3B%0A%7D%0Aa%2C%20a%3Avisited%20%7B%0Atext%2Ddecoration%3A%20underline%3B%0A%7D%0Ahr%20%7B%0Aheight%3A%201px%3B%0Aborder%3A%200%3B%0Aborder%2Dbottom%3A%201px%20solid%20black%3B%0A%7D%0Aa%5Bhref%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28href%29%20%22%29%22%3B%0A%7D%0Aabbr%5Btitle%5D%3Aafter%20%7B%0Acontent%3A%20%22%20%28%22%20attr%28title%29%20%22%29%22%3B%0A%7D%0A%2Eir%20a%3Aafter%2C%20a%5Bhref%5E%3D%22javascript%3A%22%5D%3Aafter%2C%20a%5Bhref%5E%3D%22%23%22%5D%3Aafter%20%7B%0Acontent%3A%20%22%22%3B%0A%7D%0Apre%2C%20blockquote%20%7B%0Aborder%3A%201px%20solid%20%23999%3B%0Apadding%2Dright%3A%201em%3B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Atr%2C%20img%20%7B%0Apage%2Dbreak%2Dinside%3A%20avoid%3B%0A%7D%0Aimg%20%7B%0Amax%2Dwidth%3A%20100%25%20%21important%3B%0A%7D%0A%40page%20%3Aleft%20%7B%0Amargin%3A%2015mm%2020mm%2015mm%2010mm%3B%0A%7D%0A%40page%20%3Aright%20%7B%0Amargin%3A%2015mm%2010mm%2015mm%2020mm%3B%0A%7D%0Ap%2C%20h2%2C%20h3%20%7B%0Aorphans%3A%203%3B%0Awidows%3A%203%3B%0A%7D%0Ah2%2C%20h3%20%7B%0Apage%2Dbreak%2Dafter%3A%20avoid%3B%0A%7D%0A%7D%0A" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<h1 id="ahf-docker">ahf-docker</h1>
+<p><em><em>Disclaimer:</em> This is work in progress (WIP). Please submit <a href="https://forge.soa4d.org/tracker/?atid=304&amp;group_id=58&amp;func=browse">here</a> any issues you find.</em></p>
+<h2 id="overview">Overview</h2>
+<p>This repository contains Docker containers for the Arrowhead project (subject to its corresponding license). These containers allow for quicker development without the need for connecting to an existing <em>local cloud</em>. Currently, these containers are at an alpha stage. Please submit any issues you find or enhancements you would like to see.</p>
+<h2 id="usage">Usage</h2>
+<h3 id="requirements">Requirements</h3>
+<p>Docker is required to run these containers. Installing Docker-Compose as well will make it easier to get started quickly.</p>
+<p>The following instructions use <code>docker-compose</code>, but if you prefer not to use it, you can find the corresponding commands under <strong><a href="#other-useful-commands">Other useful commands</a></strong>.</p>
+<h3 id="run">Run</h3>
+<p>With GIT, Docker and Docker-Compose installed:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> core
+<span class="kw">docker-compose</span> up --build <span class="kw">&amp;&amp;</span> <span class="kw">docker-compose</span> down -v</code></pre></div>
+<h3 id="test">Test</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> soapui
+<span class="kw">docker-compose</span> up --build <span class="kw">&amp;&amp;</span> <span class="kw">docker-compose</span> down -v</code></pre></div>
+<p><strong>Note for Windows:</strong> Docker might ask for your credentials to share your drive. This is necessary to output the TSIG file to the host. You may remove this behaviour by editing the <code>docker-compose.yml</code> file and removing any <code>volumes</code> entries and their children.</p>
+<h2 id="connecting-from-a-java-application">Connecting from a Java application</h2>
+<p>To make calls to the services from a Java application, and specifically, if you are using the core-utils library, you will need to provide the JVM with the following parameters:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">-Ddns.server</span>=<span class="kw">&lt;</span>IP_of_the_docker_interface<span class="kw">&gt;</span>
+<span class="kw">-Ddnssd.hostname</span>=<span class="kw">&lt;</span>ip_or_name_holding_your_service<span class="kw">&gt;</span>
+<span class="kw">-Ddnssd.domain</span>=srv.docker.ahf.
+<span class="kw">-Ddnssd.browsingDomains</span>=srv.docker.ahf.
+<span class="kw">-Ddnssd.registerDomain</span>=srv.docker.ahf.
+<span class="kw">-Ddnssd.tsig</span>=<span class="st">&quot;&lt;tsig_file_location&gt;&quot;</span></code></pre></div>
+<p>If you are using an older version of core-utils, the JVM parameters might be different:</p>
+<pre><code>-Ddns.server=&lt;IP_of_the_docker_interface&gt;
+-Ddnssd.hostname=&lt;ip_or_name_holding_your_service&gt;
+-Ddnssd.domain=docker.ahf.
+-Ddnssd.browsingDomains=docker.ahf.
+-Ddns.registerDomain=docker.ahf.
+-Ddnssd.tsig=&quot;&lt;tsig_file_location&gt;&quot;</code></pre>
+<h3 id="connection-and-security">Connection and security</h3>
+<p>To connect to services running in your own computer you may use the <code>127.0.0.1</code> local IP along with the corresponding service port. Docker sets up the necessary bindings for the corresponding containers.</p>
+<p>If you wish to connect to the services from external machines, you may use the host's IP address. If there are any issues, you should check your firewall and, in Linux, the setting of <code>net.ipv4.conf.all.forwarding</code>.</p>
+<p>You may also use that system parameter if you wish to restrict services to only be accessible by the host running the containers. To do this, you would run the following command (which you can change at any point during runtime without having to restart the containers):</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> sysctl net.ipv4.conf.all.forwarding=0</code></pre></div>
+<p>Alternatively, you may set up rules in your firewall, but that is beyond the scope of this document.</p>
+<h4 id="certificates-keys-and-tsig">Certificates, keys and TSIG</h4>
+<p>When the containers are run with <code>docker-compose</code> or with the suggested parameters, they will create directories called <code>tls</code> and <code>tsig</code>. These contain helpful files such as a CA certificate with its key, along with a signed testing certificate, as well as a file with the TSIG key.To use these files outside of docker, the proper permissions should be set. Docker does not have information about your user so it cannot give you permissions.</p>
+<p>To help you out in fast development, the containers will automatically set lax permissions for these folders and their contents (777). THIS IS INSECURE and will not be done unless you explicitly set the <code>LOCK_OUT_DIR</code> environment variable to false.</p>
+<p>To help out anyone who wants to get things up and running quickly, this <code>LOCK_OUT_DIR</code> is set to false in the core docker-compose file. Modify it as needed.</p>
+<h3 id="tsig">TSIG</h3>
+<p>The TSIG file is used by the DNS server to autheticate update requests. It is made available after starting the container for easy usage with core-utils. It can be located in <code>./out/tsig</code>. If you need to modify it for any reasons, it should maintain the following format used by core-utils at least up to version 1.7.</p>
+<pre><code>key.docker.ahf.
+&lt;key&gt;</code></pre>
+<p><em>The TSIG key usage can currently be bypassed. This is an alpha release. Please do not use if security is a concern. <em>(If necessary, though, TSIG usage can be easily enforced by editing the named.conf.template file)</em></em></p>
+<h2 id="simpleservicediscovery">SimpleServiceDiscovery</h2>
+<p>Systems without DNS-SD capabilities might consider using the SimpleServiceDiscovery service which is included. <a href="https://bitbucket.org/fedeselmer/simpleservicediscovery/">Developed by Federico Montori and Hasan Derhamy</a>, this service provides a REST API for performing operations on the service registry.</p>
+<p>The docker compose configuration will automatically deploy it. The corresponding files are located in the <code>simpleservicediscovery</code> directory.</p>
+<p>To test it, you may perform a simple query as follows:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">curl</span> 127.0.0.1:8045/servicediscovery/service</code></pre></div>
+<p>The rest of the API will be documented here soon. For the time being please refer to the repository linked above.</p>
+<h2 id="testing">Testing</h2>
+<p>Correct deployment of the different components can be quickly tested as follows. These commands assume you are currently at the <code>core</code> folder.</p>
+<h3 id="service-discovery">Service Discovery</h3>
+<p>This is only an EJB used by Orchestration and Authorisation, so there is no direct way to test it. You can, however check that it is deployed by using the following command. You will be asked to accept the server's certificate and to log in as the Glassfish administrator (default is admin:pass).</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> exec -it \
+    core_glassfish_1 /glassfish3/glassfish/bin/asadmin list-applications</code></pre></div>
+<h3 id="orchestration">Orchestration</h3>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">curl</span> https://127.0.0.1:8181/orchestration/store/orchestration/configurations \
+    -k --cert tls/cert.pem:changeit -i</code></pre></div>
+<h3 id="authorisation">Authorisation</h3>
+<p>This one is actually not working at the moment:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">curl</span> https://127.0.0.1:8181/authorisation/authorisation \
+    -k -i -X POST -H <span class="st">'Content-Type: application/xml'</span> \
+    -d <span class="st">'&lt;AuthorisationRequest&gt;&lt;serviceType/&gt;&lt;serviceName/&gt;&lt;distinguishedName/&gt;&lt;/AuthorisationRequest&gt;'</span> \
+    --cert tls/cert.pem:changeit</code></pre></div>
+<h3 id="management-tool">Management Tool</h3>
+<p>In your explorer you may use this tool. Head to <code>http://127.0.0.1:8080/managementtool</code> and input the Glassfish administrator credentials (default are admin:pass).</p>
+<h2 id="other-useful-commands">Other useful commands</h2>
+<p>To start an instance of the NTP server (<code>bind</code>) without docker-compose.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-bind core/bind
+<span class="kw">docker</span> run --rm \
+           --volume tsig:/tsig \
+           --hostname bind.docker.ahf \
+           --net-alias bind.docker.ahf \
+           --network ahf \
+           --publish 53:53/udp \
+           --name ahf-bind ahf-bind</code></pre></div>
+<p>To start an instance of the application server (<code>glassfish</code>) without docker-compose.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-glassfish core/glassfish
+<span class="kw">docker</span> run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname glassfish.docker.ahf \
+           --net-alias glassfish.docker.ahf \
+           --net-alias docker \
+           --network ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env REGISTER_WITH_DNS=true \
+           --publish 8080:8080 \
+           --publish 8181:8181 \
+           --name=ahf-glassfish ahf-glassfish</code></pre></div>
+<p>To start an instance of the service registry proxy (<code>simpleservicediscovery</code>) without docker-compose.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-ssd core/simpleservicediscovery
+<span class="kw">docker</span> run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname simpleservicediscovery.docker.ahf \
+           --network ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env BROWSING_DOMAIN=docker.ahf \
+           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+           --env REGISTER_WITH_DNS=true \
+           --publish 8045:8045 \
+           --name=ahf-ssd ahf-ssd</code></pre></div>
+<p>To run the SoapUI test suite without docker-compose.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-soapui soapui
+<span class="kw">docker</span> run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname soapui.docker.ahf \
+           --network ahf \
+           --name=ahf-soapui ahf-soapui</code></pre></div>
+<p>To get the auto-generated TLS files, including the Certificate Authority certificate and key.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> cp -far <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">docker</span> volume inspect tls <span class="kw">|</span> 
+    <span class="kw">grep</span> Mountpoint <span class="kw">|</span> 
+    <span class="kw">sed</span> -E <span class="st">'s/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g'</span><span class="ot">)</span><span class="st">/.&quot;</span> . <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+    <span class="kw">sudo</span> chown -R <span class="ot">$USER</span>:<span class="ot">$USER</span> .</code></pre></div>
+<p>To get the auto-generated TSIG file.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> cp -far <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">docker</span> volume inspect tsig <span class="kw">|</span> 
+    <span class="kw">grep</span> Mountpoint <span class="kw">|</span> 
+    <span class="kw">sed</span> -E <span class="st">'s/^\s*&quot;\w*&quot;\s*:\s*&quot;(.*)&quot;.*$/\1/g'</span><span class="ot">)</span><span class="st">/.&quot;</span> . <span class="kw">&amp;&amp;</span> <span class="kw">\</span>
+    <span class="kw">sudo</span> chown -R <span class="ot">$USER</span>:<span class="ot">$USER</span> .</code></pre></div>
+<p>Clean up Docker:</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> system prune -a</code></pre></div>
+<p>Completely clean up Docker (factory defaults / hard reset):</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"> <span class="kw">sudo</span> su -c <span class="st">&quot;service docker stop &amp;&amp;</span>
+<span class="st"> rm -r /var/lib/docker/* &amp;&amp;</span>
+<span class="st"> service docker start&quot;</span></code></pre></div>
+<h2 id="disclaimer">Disclaimer</h2>
+<p><em>This might open ports in your computer. Please refer to the <a href="#connection-and-security">Connection and security</a> section</em></p>
+</body>
+</html>

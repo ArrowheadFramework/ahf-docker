@@ -1,0 +1,24 @@
+version: '3.2'
+services:
+  soapui:
+    build: .
+    dns: localhost 
+    dns_search: docker.ahf
+    hostname: soapui
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - soapui.docker.ahf
+volumes:
+  core_tls:
+    external:
+      name: core_tls
+networks:
+  ahf:
+    external:
+      name: core_ahf
+
+  

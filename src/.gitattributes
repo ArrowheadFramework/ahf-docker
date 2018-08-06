@@ -1,0 +1,5 @@
+*.sh			eol=lf
+*.bash			eol=lf
+**.template		eol=lf
+**.properties		eol=lf
+

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:soapui-settings xmlns:con="http://eviware.com/soapui/config">
+    <con:setting id="SSLSettings@keyStore">/ahf/soapui-cert.jks</con:setting>
+    <con:setting id="SSLSettings@keyStorePassword">changeit</con:setting>
+    <con:setting id="SSLSettings@needClientAuthentication">true</con:setting>
+</con:soapui-settings>

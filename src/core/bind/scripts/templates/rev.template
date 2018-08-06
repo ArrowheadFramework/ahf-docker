@@ -1,0 +1,8 @@
+$TTL 1D
+
+@	1D	IN	SOA	ns.<domain>. root.<domain> (1 4h 1h 1w 1h)
+
+@	1D	IN	NS	ns.<domain>.
+
+<sub-address>	1D	IN	PTR	ns.<domain>.
+

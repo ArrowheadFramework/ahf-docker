@@ -1,0 +1,62 @@
+version: '3.2'
+services:
+  presencesensor:
+    build: ./presence-sensor
+    dns: bind
+    dns_search: docker.ahf
+    environment:
+      PORT: 8091
+    ports:
+      - "8091:8091"
+    hostname: presencesensor1
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - presencesensor.docker.ahf
+  lightcontrol1:
+    build: ./control
+    environment:
+      SN: 1
+      PORT: 8092
+    ports:
+      - "8092:8092"
+    dns: bind
+    dns_search: docker.ahf
+    hostname: lightcontrol1
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - lightcontrol1.docker.ahf
+  lightcontrol2:
+    build: ./control
+    environment:
+      SN: 2
+      PORT: 8093
+    ports:
+      - "8093:8093"
+    dns: bind
+    dns_search: docker.ahf
+    hostname: lightcontrol2
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - lightcontrol2.docker.ahf
+volumes:
+  core_tls:
+    external:
+      name: core_tls
+networks:
+  ahf:
+    external:
+      name: core_ahf
+
+  

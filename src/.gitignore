@@ -1,0 +1,10 @@
+core/ssl
+core/tls
+core/tsig
+core/out
+.idea/
+*.iml
+*.class
+.resin-sync.yml
+bin/
+.gendoc.sh

@@ -1,0 +1,29 @@
+version: '3.2'
+services:
+  lightcontrol1:
+    build: .
+    environment:
+      SN: 1
+      PORT: 8092
+    ports:
+      - "8092:8092"
+    dns: bind
+    dns_search: docker.ahf
+    hostname: lightcontrol1
+    domainname: docker.ahf
+    volumes:
+      - core_tls:/tls
+    networks:
+      ahf:
+        aliases: 
+          - lightcontrol1.docker.ahf
+volumes:
+  core_tls:
+    external:
+      name: core_tls
+networks:
+  ahf:
+    external:
+      name: core_ahf
+
+  
