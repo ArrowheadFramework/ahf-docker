@@ -1,39 +1,9 @@
 == Using Docker containers ==
 Alternatively, you may deploy a local cloud quickly by using Docker containers.
 
-The Git repository contains the development files of these containers as well as
-the versioned releases. Under most circumstances, it is recommended to use the
-versioned
-[https://forge.soa4d.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=arrowhead-f/arrowhead-f.git;a=tree;f=3_Core+Systems/4_Local+deployment+guidence/V3.0_docker/releases;hb=HEAD
-releases], but if you will be developing or testing the latest changes, use
-[https://forge.soa4d.org/plugins/scmgit/cgi-bin/gitweb.cgi?p=arrowhead-f/arrowhead-f.git;a=tree;f=3_Core+Systems/4_Local+deployment+guidence/V3.0_docker/dev;hb=HEAD
-dev].
-
-Location:
-<div style="overflow: auto">
-<code>
-    $ cd "arrowhead-f/3_Core Systems/4_Local deployment guidence/V3.0_docker"
-</code>
-</div>
-
-Alternatively, you may download releases directly from the
-[https://forge.soa4d.org/frs/?group_id=58 Forge website].
-
-=== Releases ===
-==== ahf-docker-17.10.4.0 ====
-'''[https://forge.soa4d.org/frs/download.php/file/273/ahf-docker-17.10.4.0.zip ahf-docker-17.10.4.0.zip]'''
-* First release.
-* Features
-** Core containers.
-** SoapUI basic projects.
-** One example (light control).
-** One proxy (MQTT). But it might be removed in favor of Hasan's work on Transparency.
-* Backlog
-** Provide images that do not require building.
-** Allow usage of external certificates / keys (including TSIG).
-** Remove remaining .class files.
-** Build SimpleServiceDiscovery from code instead of downloading a binary.
-** Change download location of the core applications.
+It is recommended to use the images published on Docker Hub, but you can take a
+look at the source code in the
+[https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=tree;f=src;h=5e33da4e83e3de50694d97d294f2f1c994000378;hb=HEAD docker git repository].
 
 === Quick usage ===
 <!--Quick run-->
@@ -835,8 +805,7 @@ request window says something along the lines of an SSL handshake error:
 
 <div style="overflow: auto">
 <pre>
-Error getting rseponse: jax.net.ssl.SSLHandshakeException: Remote host closed
-connection during handshake
+Error getting rseponse: jax.net.ssl.SSLHandshakeException: Remote host closed connection during handshake
 </pre>
 </div>
 
