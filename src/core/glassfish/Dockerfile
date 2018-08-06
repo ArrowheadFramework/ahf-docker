@@ -27,13 +27,13 @@ WORKDIR /ahf
 # Ideally we will get the code for these and build them from the sources in the future.
 # For a shorter term, it will also be important to move them out of GitHub.
 RUN wget -O authorisation.ear \
-    https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/authorisation-application-1.2.ear?raw=true && \
+    https://github.com/fernando-ltu/ahf-docker/blob/aca3eb18d673b7e5a682346fd22dd2e486ea5dab/core/glassfish/core-services/authorisation-application-1.2.ear?raw=true && \
     wget -O managementtool.war \
-    https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/managementtool-1.2.5.war?raw=true && \
+    https://github.com/fernando-ltu/ahf-docker/blob/aca3eb18d673b7e5a682346fd22dd2e486ea5dab/core/glassfish/core-services/managementtool-1.2.5.war?raw=true && \
     wget -O orchestration.ear \
-    https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/orchestration-application-1.1.ear?raw=true && \
+    https://github.com/fernando-ltu/ahf-docker/blob/aca3eb18d673b7e5a682346fd22dd2e486ea5dab/core/glassfish/core-services/orchestration-application-1.1.ear?raw=true && \
     wget -O service-registry.ear \
-    https://github.com/fernando-ltu/ahf-docker/blob/master/core/glassfish/core-services/service-registry-application-1.1.2.ear?raw=true
+    https://github.com/fernando-ltu/ahf-docker/blob/aca3eb18d673b7e5a682346fd22dd2e486ea5dab/core/glassfish/core-services/service-registry-application-1.1.2.ear?raw=true
 
 COPY scripts/glassfish-setup.sh scripts/glassfish.properties ./
 RUN ./glassfish-setup.sh
