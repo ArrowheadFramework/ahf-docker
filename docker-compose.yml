@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   glassfish:
-    build: ./glassfish
+    image: arrowheadf/core:3.0
     ports:
       - "8080:8080"
       - "8181:8181"
@@ -16,7 +16,6 @@ services:
       - TESTER_KEYSTORE_PASSWORD=changeit
       - DNS_SERVER=bind
       - REGISTER_WITH_DNS=true
-      - SECURE_GLASSFISH=true
       - SERVER_HOSTNAME=glassfish.docker.ahf
       - SERVER_DOMAIN=docker.ahf
       - DO_DYNAMIC_DNS_UPDATE=true
@@ -42,7 +41,7 @@ services:
         aliases: # Used for when dns is ignored
           - glassfish.docker.ahf
   bind:
-    build: ./bind
+    image: arrowheadf/serviceregistry:3.0
     dns:
       - bind
     environment:
@@ -69,7 +68,7 @@ services:
         source: tsig
         target: /tsig
   simpleservicediscovery:
-    build: ./simpleservicediscovery
+    image: arrowheadf/simpleservicediscovery:3.0
     ports:
       - "5683:5683"
       - "8045:8045"

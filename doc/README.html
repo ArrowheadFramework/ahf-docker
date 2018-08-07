@@ -53,15 +53,78 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="usage">Usage</h2>
 <h3 id="requirements">Requirements</h3>
 <p>Docker is required to run these containers. Installing Docker-Compose as well will make it easier to get started quickly.</p>
-<p>The following instructions use <code>docker-compose</code>, but if you prefer not to use it, you can find the corresponding commands under <strong><a href="#other-useful-commands">Other useful commands</a></strong>.</p>
-<h3 id="run">Run</h3>
-<p>With GIT, Docker and Docker-Compose installed:</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> src/core
-<span class="kw">docker-compose</span> up --build <span class="kw">&amp;&amp;</span> <span class="kw">docker-compose</span> down -v</code></pre></div>
-<h3 id="test">Test</h3>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">cd</span> src/soapui
-<span class="kw">docker-compose</span> up --build <span class="kw">&amp;&amp;</span> <span class="kw">docker-compose</span> down -v</code></pre></div>
-<p><strong>Note for Windows:</strong> Docker might ask for your credentials to share your drive. This is necessary to output the TSIG file to the host. You may remove this behaviour by editing the <code>docker-compose.yml</code> file and removing any <code>volumes</code> entries and their children.</p>
+<h3 id="using-docker-compose">Using Docker Compose</h3>
+<h4 id="run">Run</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker-compose</span> -p <span class="st">&quot;ahf&quot;</span> up <span class="kw">&amp;&amp;</span> <span class="kw">docker-compose</span> -p <span class="st">&quot;ahf&quot;</span> down -v</code></pre></div>
+<h4 id="test">Test</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm \
+           --volume ahf_tls:/tls \
+           --volume ahf_tsig:/tsig \
+           --hostname soapui.docker.ahf \
+           --network ahf_net \
+           --name=ahf-soapui arrowheadf/tests:3.0</code></pre></div>
+<h3 id="without-docker-compose">Without Docker Compose</h3>
+<h4 id="run-1">Run</h4>
+<p>First we need to create a network for our containers to communicate.</p>
+<p><em>(If this is undesired, you can instead use <code>host</code> as the <code>--network</code> value in subsequent commands.)</em></p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> network create ahf</code></pre></div>
+<p>Start up the DNS-SD service registry.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm \
+           --network ahf \
+           --volume tsig:/tsig \
+           --hostname bind.docker.ahf \
+           --net-alias bind.docker.ahf \
+           --env ALLOW_DOMAIN_UPDATE=true \
+           --env SERVER_DOMAIN=docker.ahf \
+           --env SERVER_HOSTNAME=bind.docker.ahf \
+           --publish 53:53/udp \
+           --name ahf-bind arrowheadf/serviceregistry:3.0</code></pre></div>
+<p>Start the Glassfish application server with the core services.</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm \
+           --network ahf \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname glassfish.docker.ahf \
+           --net-alias glassfish.docker.ahf \
+           --net-alias docker \
+           --env LOCK_OUT_DIR=false \
+           --env GLASSFISH_ADMIN=admin \
+           --env GLASSFISH_PASSWORD=password \
+           --env KEYSTORE_PASSWORD=changeit \
+           --env TESTER_KEYSTORE_PASSWORD=changeit \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env SERVER_HOSTNAME=glassfish.docker.ahf \
+           --env SERVER_DOMAIN=docker.ahf \
+           --env REGISTER_WITH_DNS=true \
+           --env DO_DYNAMIC_DNS_UPDATE=true \
+           --publish 8080:8080 \
+           --publish 8181:8181 \
+           --name=ahf-glassfish arrowheadf/core:3.0</code></pre></div>
+<p>Optionally start the HTTP service registry interface (<code>simpleservicediscovery</code>).</p>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm \
+           --network ahf \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname simpleservicediscovery.docker.ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env BROWSING_DOMAIN=docker.ahf \
+           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+           --env WAIT_FOR_TLS_READY=true \
+           --env WAIT_FOR_ORCH_STORE=true \
+           --env SERVER_HOSTNAME=simpleservicediscovery.docker.ahf \
+           --env SERVER_DOMAIN=docker.ahf \
+           --env REGISTER_WITH_DNS=true \
+           --env DO_DYNAMIC_DNS_UPDATE=true \
+           --publish 8045:8045 \
+           --name=ahf-ssd arrowheadf/simpleservicediscovery:3.0</code></pre></div>
+<h4 id="test-1">Test</h4>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname soapui.docker.ahf \
+           --network ahf \
+           --name=ahf-soapui arrowheadf/tests:3.0</code></pre></div>
 <h2 id="connecting-from-a-java-application">Connecting from a Java application</h2>
 <p>To make calls to the services from a Java application, and specifically, if you are using the core-utils library, you will need to provide the JVM with the following parameters:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">-Ddns.server</span>=<span class="st">&quot;&lt;IP_of_the_docker_interface&gt;&quot;</span>
@@ -118,72 +181,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>In your explorer you may use this tool. Head to <code>http://127.0.0.1:8080/managementtool</code> and input the Glassfish administrator credentials (default are admin:pass).</p>
 <h2 id="other-useful-commands">Other useful commands</h2>
 <ul>
-<li><p>To start an instance of the DNS server (<code>bind</code>) without docker-compose.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-bind src/core/bind
-<span class="kw">docker</span> network create ahf
-<span class="kw">docker</span> run --rm \
-       --network ahf \
-       --volume tsig:/tsig \
-       --hostname bind.docker.ahf \
-       --net-alias bind.docker.ahf \
-       --env ALLOW_DOMAIN_UPDATE=true \
-       --env SERVER_DOMAIN=docker.ahf \
-       --env SERVER_HOSTNAME=bind.docker.ahf \
-       --publish 53:53/udp \
-       --name ahf-bind ahf-bind</code></pre></div></li>
-<li><p>To start an instance of the application server (<code>glassfish</code>) without docker-compose.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-glassfish src/core/glassfish
-<span class="kw">docker</span> network create ahf
-<span class="kw">docker</span> run --rm \
-       --network ahf \
-       --volume tls:/tls \
-       --volume tsig:/tsig \
-       --hostname glassfish.docker.ahf \
-       --net-alias glassfish.docker.ahf \
-       --net-alias docker \
-       --env LOCK_OUT_DIR=false \
-       --env GLASSFISH_ADMIN=admin \
-       --env GLASSFISH_PASSWORD=password \
-       --env KEYSTORE_PASSWORD=changeit \
-       --env TESTER_KEYSTORE_PASSWORD=changeit \
-       --env DNS_SERVER=bind.docker.ahf \
-       --env SECURE_GLASSFISH=true \
-       --env SERVER_HOSTNAME=glassfish.docker.ahf \
-       --env SERVER_DOMAIN=docker.ahf \
-       --env REGISTER_WITH_DNS=true \
-       --env DO_DYNAMIC_DNS_UPDATE=true \
-       --publish 8080:8080 \
-       --publish 8181:8181 \
-       --name=ahf-glassfish ahf-glassfish</code></pre></div></li>
-<li><p>To start an instance of the service registry proxy (<code>simpleservicediscovery</code>) without docker-compose.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-ssd src/core/simpleservicediscovery
-<span class="kw">docker</span> network create ahf
-<span class="kw">docker</span> run --rm \
-       --network ahf \
-       --volume tls:/tls \
-       --volume tsig:/tsig \
-       --hostname simpleservicediscovery.docker.ahf \
-       --env DNS_SERVER=bind.docker.ahf \
-       --env BROWSING_DOMAIN=docker.ahf \
-       --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
-       --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
-       --env WAIT_FOR_TLS_READY=true \
-       --env WAIT_FOR_ORCH_STORE=true \
-       --env SERVER_HOSTNAME=simpleservicediscovery.docker.ahf \
-       --env SERVER_DOMAIN=docker.ahf \
-       --env REGISTER_WITH_DNS=true \
-       --env DO_DYNAMIC_DNS_UPDATE=true \
-       --publish 8045:8045 \
-       --name=ahf-ssd ahf-ssd</code></pre></div></li>
-<li><p>To run the SoapUI test suite without docker-compose.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf-soapui src/soapui
-<span class="kw">docker</span> run --rm \
-       --volume tls:/tls \
-       --volume tsig:/tsig \
-       --hostname soapui.docker.ahf \
-       --network ahf \
-       --name=ahf-soapui ahf-soapui</code></pre></div></li>
-<li><p>To get the auto-generated TLS files, including the Certificate Authority certificate and key.</p></li>
+<li>To get the auto-generated TLS files, including the Certificate Authority certificate and key.</li>
 </ul>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> cp -far <span class="st">&quot;</span><span class="ot">$(</span><span class="kw">docker</span> volume inspect tls <span class="kw">|</span> 
     <span class="kw">grep</span> Mountpoint <span class="kw">|</span> 
@@ -198,9 +196,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li><p>Clean up Docker:</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> system prune -a</code></pre></div></li>
 <li><p>Completely clean up Docker (factory defaults / hard reset):</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"> <span class="kw">sudo</span> su -c <span class="st">&quot;service docker stop &amp;&amp;</span>
-<span class="st"> rm -r /var/lib/docker/* &amp;&amp;</span>
-<span class="st"> service docker start&quot;</span></code></pre></div></li>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> su -c <span class="st">&quot;service docker stop &amp;&amp;</span>
+<span class="st">rm -r /var/lib/docker/* &amp;&amp;</span>
+<span class="st">service docker start&quot;</span></code></pre></div></li>
 </ul>
 <h2 id="more-information">More information</h2>
 <p>You can find more information on the <a href="https://forge.soa4d.org/plugins/mediawiki/wiki/arrowhead-f/index.php/Local_cloud_deployment#Using_Docker_containers">Arrowhead Framework Wiki</a>.</p>

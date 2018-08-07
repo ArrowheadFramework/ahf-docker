@@ -7,7 +7,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /ahf
 
 RUN wget http://smartbearsoftware.com/distrib/soapui/5.2.1/SoapUI-5.2.1-linux-bin.tar.gz && \
-    tar -xvzf SoapUI-5.2.1-linux-bin.tar.gz
+    tar -xvzf SoapUI-5.2.1-linux-bin.tar.gz && \
+    rm SoapUI-5.2.1-linux-bin.tar.gz
 
 COPY ./soapui-min-settings.xml .
 COPY ./projects projects

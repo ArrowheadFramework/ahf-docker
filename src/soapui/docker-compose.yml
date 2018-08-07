@@ -7,18 +7,18 @@ services:
     hostname: soapui
     domainname: docker.ahf
     volumes:
-      - core_tls:/tls
+      - tls:/tls
     networks:
-      ahf:
+      net:
         aliases: 
           - soapui.docker.ahf
 volumes:
-  core_tls:
+  tls:
     external:
-      name: core_tls
+      name: ahf_tls
 networks:
-  ahf:
+  net:
     external:
-      name: core_ahf
+      name: ahf_net
 
   
