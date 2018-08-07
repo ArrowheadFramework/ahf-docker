@@ -1,12 +1,31 @@
-= simpleservicediscovery =
+= SimpleServiceDiscovery 3.0 container =
 
-This directory contains a ''dockerized'' version of the HTTP proxy for the DNS-SD-based Arrowhead service discovery. [https://bitbucket.org/fedeselmer/simpleservicediscovery/ Developed by Federico Montori and Hasan Derhamy], this service provides a REST API for performing operations on the service registry.
+This is a ''dockerized'' version of the HTTP proxy for the DNS-SD-based Arrowhead service discovery. [https://bitbucket.org/fedeselmer/simpleservicediscovery/ Developed by Federico Montori and Hasan Derhamy], this service provides a REST API for performing operations on the service registry.
 
 == Usage ==
 
-For this container to run, a name server and the Arrowhead core services are necessary. Readily dockerized versions of these can be found in <code>bind/</code> and <code>glassfish/</code>, correspondingly.
+For this container to run, a name server and the Arrowhead core services are necessary. Readily dockerized versions of these can be found in <code>arrowheadf/serviceregistry:3.0</code> and <code>arrowheadf/core:3.0</code>, correspondingly.
 
-<pre>docker build -t ahf-ssd .
+<pre>docker run --rm \
+           --network ahf \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname simpleservicediscovery.docker.ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+           --publish 8045:8045 \
+           --name=ahf-ssd arrowheadf/simpleservicediscovery:3.0</pre>
+== Build from source ==
+
+<pre>container_name=ahf-ssd
+
+curl -k -o &quot;${container_name}&quot;.tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=0d04fe33f534849869c8450d9939041e29da9e4f;sf=tgz'
+mkdir -p &quot;${container_name}&quot;
+tar -xvf &quot;${container_name}&quot;.tar.gz -C &quot;${container_name}&quot; --strip-component=1
+
+docker build -t &quot;${container_name}&quot; &quot;${container_name}&quot;
 docker run --rm \
            --network ahf \
            --volume tls:/tls \
@@ -23,7 +42,7 @@ docker run --rm \
            --env REGISTER_WITH_DNS=true \
            --env DO_DYNAMIC_DNS_UPDATE=true \
            --publish 8045:8045 \
-           --name=ahf-ssd ahf-ssd</pre>
+           --name &quot;${container_name}&quot; &quot;${container_name}&quot;</pre>
 == Environment Variables ==
 
 Runtime of this container can be configured using the environment variables below. They can be set when running the container by using the <code>--env</code> option.

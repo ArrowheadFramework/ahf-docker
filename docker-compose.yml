@@ -11,7 +11,7 @@ services:
     environment:
       - LOCK_OUT_DIR=false
       - GLASSFISH_ADMIN=admin
-      - GLASSFISH_PASSWORD=password
+      - GLASSFISH_PASSWORD=pass
       - KEYSTORE_PASSWORD=changeit
       - TESTER_KEYSTORE_PASSWORD=changeit
       - DNS_SERVER=bind

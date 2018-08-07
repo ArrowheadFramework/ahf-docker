@@ -105,7 +105,6 @@ if [ -z "${BROWSING_DOMAIN}" ]
 then
   echo "Environment variable BROWSING_DOMAIN not set."
   echo "Assuming ${SERVER_DOMAIN}"
-else
   BROWSING_DOMAIN=${SERVER_DOMAIN}
 fi
 

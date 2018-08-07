@@ -6,6 +6,7 @@ ENV ADMIN_PORT=4848 \
     GLASSFISH_HOME=/glassfish3/glassfish/ \
     GLASSFISH_VERSION=3.1.2.2 \
     GLASSFISH_ADMIN=admin \
+    REGISTER_WITH_DNS=true \
     GLASSFISH_PASSWORD=pass \
     KEYSTORE_PASSWORD=changeit \
     TESTER_KEYSTORE_PASSWORD=changeit \

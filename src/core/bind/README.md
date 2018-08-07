@@ -1,12 +1,32 @@
-# bind
+# Service Registry 3.0 container
 
-This directory contains a _dockerized_ version of bind, a name server (DNS),
-ready to be used for the Arrowhead Framework 3.0.
+This is a _dockerized_ version of `bind`, a name server (DNS), ready to be used
+for the Arrowhead Framework 3.0.
 
 ## Usage
 
 ```bash
-docker build -t ahf-bind .
+docker run --rm \
+           --network ahf \
+           --volume tsig:/tsig \
+           --hostname bind.docker.ahf \
+           --net-alias bind.docker.ahf \
+           --env ALLOW_DOMAIN_UPDATE=true \
+           --publish 53:53/udp \
+           --name ahf-bind arrowheadf/serviceregistry:3.0
+```
+
+## Build from source
+
+```bash
+container_name=ahf-bind
+
+curl -k -o "${container_name}".tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=e2fe115958ab30717f366931d6fed031577d6c3c;sf=tgz'
+mkdir -p "${container_name}"
+tar -xvf "${container_name}".tar.gz -C "${container_name}" --strip-component=1
+
+docker build -t "${container_name}" "${container_name}"
 docker network create ahf
 docker run --rm \
            --network ahf \
@@ -17,7 +37,7 @@ docker run --rm \
            --env SERVER_DOMAIN=docker.ahf \
            --env SERVER_HOSTNAME=bind.docker.ahf \
            --publish 53:53/udp \
-           --name ahf-bind ahf-bind
+           --name "${container_name}" "${container_name}"
 ```
 
 ## Environment Variables

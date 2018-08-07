@@ -1,7 +1,23 @@
-# ahf-docker/src
+# Arrowhead 3.0 Containers Source
 
-This directory contains the source for building the Arrowhead Framework 3.0
+This document contains information on building the Arrowhead Framework 3.0
 containers from scratch.
+
+## Getting the source code
+
+The easiest way, unless this other repository is removed, is to download the
+latest [snapshot of the
+docker.git](https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=refs/heads/3.0;sf=tgz)
+repository and extract it.
+
+The following commands will do this for you (in Linux at least).
+
+```bash
+curl -k -o ahf-docker-3.0.tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=refs/heads/3.0;sf=tgz'
+mkdir -p ahf-docker-3.0
+tar -xvf ahf-docker-3.0.tar.gz -C ahf-docker-3.0 --strip-component=1
+```
 
 ## Instructions for users
 

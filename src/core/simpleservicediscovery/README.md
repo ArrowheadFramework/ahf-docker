@@ -1,17 +1,38 @@
-# simpleservicediscovery
+# SimpleServiceDiscovery 3.0 container
 
-This directory contains a _dockerized_ version of the HTTP proxy for the
-DNS-SD-based Arrowhead service discovery. [Developed by Federico Montori and
-Hasan Derhamy](https://bitbucket.org/fedeselmer/simpleservicediscovery/), this
-service provides a REST API for performing operations on the service registry.
+This is a _dockerized_ version of the HTTP proxy for the DNS-SD-based Arrowhead
+service discovery. [Developed by Federico Montori and Hasan
+Derhamy](https://bitbucket.org/fedeselmer/simpleservicediscovery/), this service
+provides a REST API for performing operations on the service registry.
 
 ## Usage
 For this container to run, a name server and the Arrowhead core services are
-necessary. Readily dockerized versions of these can be found in `bind/` and
-`glassfish/`, correspondingly.
+necessary. Readily dockerized versions of these can be found in
+`arrowheadf/serviceregistry:3.0` and `arrowheadf/core:3.0`, correspondingly.
 
 ```bash
-docker build -t ahf-ssd .
+docker run --rm \
+           --network ahf \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname simpleservicediscovery.docker.ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
+           --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
+           --publish 8045:8045 \
+           --name=ahf-ssd arrowheadf/simpleservicediscovery:3.0
+```
+
+## Build from source
+```bash
+container_name=ahf-ssd
+
+curl -k -o "${container_name}".tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=0d04fe33f534849869c8450d9939041e29da9e4f;sf=tgz'
+mkdir -p "${container_name}"
+tar -xvf "${container_name}".tar.gz -C "${container_name}" --strip-component=1
+
+docker build -t "${container_name}" "${container_name}"
 docker run --rm \
            --network ahf \
            --volume tls:/tls \
@@ -28,7 +49,7 @@ docker run --rm \
            --env REGISTER_WITH_DNS=true \
            --env DO_DYNAMIC_DNS_UPDATE=true \
            --publish 8045:8045 \
-           --name=ahf-ssd ahf-ssd
+           --name "${container_name}" "${container_name}"
 ```
 
 ## Environment Variables
@@ -71,12 +92,14 @@ the address registered in the DNS server when `DO_DYNAMIC_DNS_UPDATE=true`.
 Default is **5** seconds.
 
 #### WAIT_FOR_TLS_READY
-Waits for the TLS certificates to be ready. You most likely want to use this, it helps avoid race conditions.
+Waits for the TLS certificates to be ready. You most likely want to use this, it
+helps avoid race conditions.
 
 Default is **true**.
 
 #### WAIT_FOR_ORCH_STORE
-Waits for the Orchestration store core service to respond. You most likely want to use this, it helps avoid race conditions.
+Waits for the Orchestration store core service to respond. You most likely want
+to use this, it helps avoid race conditions.
 
 Default is **true**.
 

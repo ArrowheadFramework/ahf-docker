@@ -1,6 +1,6 @@
-= ahf-docker =
+= Arrowhead Core 3.0 Docker Containers =
 
-**Disclaimer:* This is work in progress (WIP). Please submit [https://forge.soa4d.org/tracker/?atid=304&group_id=58&func=browse here] any issues you find.*
+''This is work in progress (WIP). Please submit [https://forge.soa4d.org/tracker/?atid=304&group_id=58&func=browse here] any issues you find.''
 
 == Overview ==
 
@@ -42,8 +42,6 @@ Start up the DNS-SD service registry.
            --hostname bind.docker.ahf \
            --net-alias bind.docker.ahf \
            --env ALLOW_DOMAIN_UPDATE=true \
-           --env SERVER_DOMAIN=docker.ahf \
-           --env SERVER_HOSTNAME=bind.docker.ahf \
            --publish 53:53/udp \
            --name ahf-bind arrowheadf/serviceregistry:3.0</pre>
 Start the Glassfish application server with the core services.
@@ -54,17 +52,8 @@ Start the Glassfish application server with the core services.
            --volume tsig:/tsig \
            --hostname glassfish.docker.ahf \
            --net-alias glassfish.docker.ahf \
-           --net-alias docker \
-           --env LOCK_OUT_DIR=false \
-           --env GLASSFISH_ADMIN=admin \
-           --env GLASSFISH_PASSWORD=password \
-           --env KEYSTORE_PASSWORD=changeit \
-           --env TESTER_KEYSTORE_PASSWORD=changeit \
            --env DNS_SERVER=bind.docker.ahf \
-           --env SERVER_HOSTNAME=glassfish.docker.ahf \
-           --env SERVER_DOMAIN=docker.ahf \
            --env REGISTER_WITH_DNS=true \
-           --env DO_DYNAMIC_DNS_UPDATE=true \
            --publish 8080:8080 \
            --publish 8181:8181 \
            --name=ahf-glassfish arrowheadf/core:3.0</pre>
@@ -76,15 +65,8 @@ Optionally start the HTTP service registry interface (<code>simpleservicediscove
            --volume tsig:/tsig \
            --hostname simpleservicediscovery.docker.ahf \
            --env DNS_SERVER=bind.docker.ahf \
-           --env BROWSING_DOMAIN=docker.ahf \
            --env ORCHESTRATION_URL=https://glassfish.docker.ahf:8181/orchestration/store \
            --env AUTHORISATION_URL=https://glassfish.docker.ahf:8181/authorisation \
-           --env WAIT_FOR_TLS_READY=true \
-           --env WAIT_FOR_ORCH_STORE=true \
-           --env SERVER_HOSTNAME=simpleservicediscovery.docker.ahf \
-           --env SERVER_DOMAIN=docker.ahf \
-           --env REGISTER_WITH_DNS=true \
-           --env DO_DYNAMIC_DNS_UPDATE=true \
            --publish 8045:8045 \
            --name=ahf-ssd arrowheadf/simpleservicediscovery:3.0</pre>
 ==== Test ====

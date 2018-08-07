@@ -1,17 +1,38 @@
-# glassfish
+# Arrowhead core 3.0 container
 
-This directory contains a _dockerized_ version of Glassfish, an application
-server for holding the Arrowhead Framework 3.0 core services, pre-configured and
-with the necessary applications loaded. to be used for the Arrowhead Framework
-3.0.
+This is a _dockerized_ version of Glassfish, an application server for holding
+the Arrowhead Framework 3.0 core services, pre-configured and with the necessary
+applications loaded. to be used for the Arrowhead Framework 3.0.
 
 ## Usage
 For this container to run, a name server is necessary. A dockerized one is
-provided in the `bind/` directory, this documentation assumes you will use that
-and have already started it.
+provided in the `arrowheadf/serviceregistry:3.0` container, this documentation
+assumes you will use that and have already started it.
 
 ```bash
-docker build -t ahf-glassfish .
+docker run --rm \
+           --network ahf \
+           --volume tls:/tls \
+           --volume tsig:/tsig \
+           --hostname glassfish.docker.ahf \
+           --net-alias glassfish.docker.ahf \
+           --env DNS_SERVER=bind.docker.ahf \
+           --env REGISTER_WITH_DNS=true \
+           --publish 8080:8080 \
+           --publish 8181:8181 \
+           --name=ahf-glassfish arrowheadf/core:3.0
+```
+
+## Build from source
+```bash
+container_name=ahf-glassfish
+
+curl -k -o "${container_name}".tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=d6f5675dee4b94dd666dbb026db3356cd1844573;sf=tgz'
+mkdir -p "${container_name}"
+tar -xvf "${container_name}".tar.gz -C "${container_name}" --strip-component=1
+
+docker build -t "${container_name}" "${container_name}"
 docker run --rm \
            --network ahf \
            --volume tls:/tls \
@@ -21,7 +42,7 @@ docker run --rm \
            --net-alias docker \
            --env LOCK_OUT_DIR=false \
            --env GLASSFISH_ADMIN=admin \
-           --env GLASSFISH_PASSWORD=password \
+           --env GLASSFISH_PASSWORD=pass \
            --env KEYSTORE_PASSWORD=changeit \
            --env TESTER_KEYSTORE_PASSWORD=changeit \
            --env DNS_SERVER=bind.docker.ahf \
@@ -32,7 +53,7 @@ docker run --rm \
            --env DO_DYNAMIC_DNS_UPDATE=true \
            --publish 8080:8080 \
            --publish 8181:8181 \
-           --name=ahf-glassfish ahf-glassfish
+           --name "${container_name}" "${container_name}"
 ```
 
 ## Environment Variables

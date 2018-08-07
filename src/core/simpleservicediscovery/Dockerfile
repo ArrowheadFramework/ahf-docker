@@ -1,7 +1,8 @@
 FROM openjdk:7-jdk-alpine
 
 ENV WAIT_FOR_ORCH_STORE=true \
-    WAIT_FOR_TLS_READY=true
+    WAIT_FOR_TLS_READY=true \
+    REGISTER_WITH_DNS=true
 
 RUN apk --no-cache add bind-tools openssl curl
 
