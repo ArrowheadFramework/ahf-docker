@@ -26,7 +26,7 @@ requirements which might not allow several containers to be run.
 To run the core container, you would first build it and then run it.
 
 ```bash
-docker build -t ahf:4.0 src/core
+docker build -t ahf:4.0 core
 ```
 
 ```bash
@@ -40,7 +40,7 @@ directory.
 You can find a [Swagger](https://swagger.io/) file called `arrowhead-core.json`
 which can be imported into SoapUI, Postman and other tools to generate client
 source code for different languages. For more information refer to
-`src/tools/generate-swagger/doc`.
+`tools/generate-swagger/doc`.
 
 A modified version of this file has been [published on
 SwaggerHub](https://app.swaggerhub.com/apis/arrowhead-f/arrowhead-4_0_core/4.0).

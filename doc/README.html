@@ -54,11 +54,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Version 4.0-lw is a lightweight implementation which contains all core services in a single Java JAR file. In turn, this container wraps everything necessary for running the Arrowhead 4.0 core services, including a pre-configured MySQL database. This is ideal for demonstrations, PoCs and projects with other tight requirements which might not allow several containers to be run.</p>
 <h2 id="usage">Usage</h2>
 <p>To run the core container, you would first build it and then run it.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf:4.0 src/core</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> build -t ahf:4.0 core</code></pre></div>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run -it --rm -p 8440:8440 --name ahf ahf:4.0</code></pre></div>
 <h2 id="api-documentation">API documentation</h2>
 <p>Documentation for the API has been auto-generated and is provided in the <code>doc</code> directory.</p>
-<p>You can find a <a href="https://swagger.io/">Swagger</a> file called <code>arrowhead-core.json</code> which can be imported into SoapUI, Postman and other tools to generate client source code for different languages. For more information refer to <code>src/tools/generate-swagger/doc</code>.</p>
+<p>You can find a <a href="https://swagger.io/">Swagger</a> file called <code>arrowhead-core.json</code> which can be imported into SoapUI, Postman and other tools to generate client source code for different languages. For more information refer to <code>tools/generate-swagger/doc</code>.</p>
 <p>A modified version of this file has been <a href="https://app.swaggerhub.com/apis/arrowhead-f/arrowhead-4_0_core/4.0">published on SwaggerHub</a>.</p>
 <p>Apart from this file, you can find <code>api.html</code>, which contains a simple page listing all the available endpoints. For most of these, the auto-generator was capable of including body examples (payloads) where necessary.</p>
 <h2 id="other-useful-commands">Other useful commands</h2>
