@@ -1,0 +1,8 @@
+{
+  "systemName": "authorization",
+  "address": "ahf-auth-control",
+  "port": 8444,
+  "serviceURI": "http://ahf-auth-control:8444/authorization",
+  "authenticationInfo": "",
+  "isSecure": false
+}

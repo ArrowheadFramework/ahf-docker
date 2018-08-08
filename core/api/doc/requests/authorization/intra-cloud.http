@@ -1,0 +1,98 @@
+### Get all IntraCloud authorization rules
+# curl -X GET http://localhost:8450/api/auth/intracloud
+GET http://localhost:8450/api/auth/intracloud
+
+### Put an authorization request
+# Checks whether the consumer System can use a Service from a list of provider
+# Systems.
+#
+# curl -d @payloads/inter-query.json -X PUT http://localhost:8450/api/auth/intracloud
+PUT http://localhost:8450/api/auth/intracloud
+Content-Type: application/json
+
+{
+  "consumer": {
+    "systemGroup": "group1",
+    "systemName": "client2",
+    "address": "localhost",
+    "port": 8080,
+    "authenticationInfo": ""
+  },
+  "providers": [{
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 8454,
+    "authenticationInfo": ""
+  }],
+  "service": {
+    "serviceGroup": "Temperature",
+    "serviceDefinition": "IndoorTemperature",
+    "interfaces": ["json"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "security",
+        "value": "token"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }
+}
+
+### Post authorization rights for a service.
+# Describes who can consume a given service producer.
+#
+# curl -d @payloads/inter-add.json -X POST http://localhost:8450/api/auth/intracloud
+POST http://localhost:8450/api/auth/intracloud
+Content-Type: application/json
+
+{
+  "consumer": {
+    "systemGroup": "group1",
+    "systemName": "client2",
+    "address": "localhost",
+    "port": 8080,
+    "authenticationInfo": ""
+  },
+  "providerList": [{
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 8454,
+    "authenticationInfo": ""
+  }],
+  "serviceList": [{
+    "serviceGroup": "Temperature",
+    "serviceDefinition": "IndoorTemperature",
+    "interfaces": ["json"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "security",
+        "value": "token"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }]
+}
+
+### Delete an authorization rule by ID.
+# curl -X DELETE http://localhost:8450/api/auth/intracloud/4
+DELETE http://localhost:8450/api/auth/intracloud/4
+
+### Delete an authorization rights of a given system (by group and name).
+# curl -X DELETE http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2
+DELETE http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2
+
+### Get all IntraCloud authorization rights of a given system (by group and name).
+# curl -X GET http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2/services
+GET http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2/services
+
+###

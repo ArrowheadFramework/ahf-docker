@@ -1,0 +1,27 @@
+### Get all own clouds
+#
+# Technically it will (should) only return one, but it will be inside an array.
+# Untested.
+#
+# curl -X GET http://localhost:8450/api/configuration/owncloud
+GET http://localhost:8450/api/configuration/owncloud
+
+### Adds or updates our (own) cloud information
+#
+# Throws org.hibernate.TransientObjectException
+#
+# curl -d @payloads/own-cloud.json -X POST http://localhost:8450/api/configuration/owncloud
+POST http://localhost:8450/api/configuration/owncloud
+Content-Type: application/json
+
+{
+    "cloud": {
+        "operator": "ahf-docker",
+        "cloudName": "ahf-docker",
+        "address": "cloud.own.docker.ahf",
+        "port": 9000,
+        "gatekeeperServiceURI": "gatekeeper.own.docker.ahf",
+        "authenticationInfo": "",
+        "isSecure": true
+    }
+}

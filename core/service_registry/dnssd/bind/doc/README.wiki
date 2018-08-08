@@ -1,0 +1,17 @@
+= bind =
+
+This directory holds a container for running a '''bind''' server for DNS(-SD) pre-configured for working with the Arrowhead Framework V3.2 core services.
+
+== Instructions ==
+
+=== Running locally ===
+
+Build this container by running the following command from this directory.
+
+<pre>docker build --tag ahf-bind .</pre>
+Create a Docker network for other containers to connect to this one. This step is not necessary if you have created the network previously.
+
+<pre>docker network create ahf</pre>
+Run the container connected to the <code>ahf</code> network.
+
+<pre>docker run --rm --network ahf --name ahf-bind ahf-bind</pre>

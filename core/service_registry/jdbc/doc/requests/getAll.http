@@ -1,0 +1,5 @@
+### Publish (register service)
+# curl -X GET http://sr.docker.ahf:8442/serviceregistry/all
+GET http://sr.docker.ahf:8442/serviceregistry/all
+
+###

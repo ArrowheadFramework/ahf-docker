@@ -1,0 +1,32 @@
+{
+  "consumer": {
+    "systemGroup": "group1",
+    "systemName": "client2",
+    "address": "localhost",
+    "port": 8080,
+    "authenticationInfo": ""
+  },
+  "providerList": [{
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 8454,
+    "authenticationInfo": ""
+  }],
+  "serviceList": [{
+    "serviceGroup": "Temperature",
+    "serviceDefinition": "IndoorTemperature",
+    "interfaces": ["json"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "security",
+        "value": "token"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }]
+}

@@ -1,0 +1,16 @@
+[
+  {
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 8454,
+    "authenticationInfo": ""
+  },
+  {
+    "systemGroup": "TemperatureControllers",
+    "systemName": "InsecureTemperatureController",
+    "address": "localhost",
+    "port": 8456,
+    "authenticationInfo": ""
+  }
+]

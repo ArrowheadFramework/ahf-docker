@@ -1,0 +1,77 @@
+### Get orchestration entry by database ID
+#
+# curl -X GET http://localhost:8450/api/orchestrator/store/7
+GET http://localhost:8450/api/orchestrator/store/7
+
+### Get all orchestration entries
+#
+# curl -X GET http://localhost:8450/api/orchestrator/store/all
+GET http://localhost:8450/api/orchestrator/store/all
+
+### Get all active orchestration entries
+#
+# curl -X GET http://localhost:8450/api/orchestrator/store/all_active
+GET http://localhost:8450/api/orchestrator/store/all_active
+
+### Adds a list of orchestration entries
+#
+# curl -d @payloads/orchestration-entries.json -X POST http://localhost:8450/api/orchestrator/store
+POST http://localhost:8450/api/orchestrator/store
+Content-Type: application/json
+
+[
+  {
+    "service": {
+      "serviceGroup": "Temperature",
+      "serviceDefinition": "TemperatureIndoors",
+      "interfaces": [
+        "JSON"
+      ],
+      "serviceMetadata": {
+        "entry": [
+          {
+            "key": "unit",
+            "value": "celsius"
+          }
+        ]
+      }
+    },
+    "consumer": {
+      "systemGroup": "TemperatureControllers",
+      "systemName": "InsecureTemperatureController",
+      "address": "0.0.0.0",
+      "port": 8456
+    },
+    "providerSystem": {
+      "systemGroup": "TemperatureSensors",
+      "systemName": "InsecureTemperatureSensor",
+      "address": "0.0.0.0",
+      "port": 8454
+    },
+    "providerCloud": {},
+    "priority": 15,
+    "isDefault": true,
+    "name": "get-charging-info",
+    "instruction": "undefined",
+    "attributes": {
+      "entry": [
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    },
+    "serviceURI": null
+  }
+]
+
+### Deletes an orchestration entry by database ID
+#
+# curl -X DELETE http://localhost:8450/api/orchestrator/store/7
+DELETE http://localhost:8450/api/orchestrator/store/7
+
+### Deletes an orchestration entries for a consumer system given by group and
+# name
+#
+# curl -X DELETE http://localhost:8450/api/orchestrator/store/systemgroup/TemperatureControllers/systemname/InsecureTemperatureController
+DELETE http://localhost:8450/api/orchestrator/store/systemgroup/TemperatureControllers/systemname/InsecureTemperatureController

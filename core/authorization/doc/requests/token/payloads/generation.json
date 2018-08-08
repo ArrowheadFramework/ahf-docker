@@ -1,0 +1,22 @@
+{
+  "consumer": {
+    "systemGroup": "CoreSystems",
+    "systemName": "Gateway",
+    "address": "127.0.0.1",
+    "port": 1234
+  },
+  "providers": [{
+    "systemGroup": "TemperatureSensors",
+    "systemName": "SecureTemperatureSensor",
+    "address": "127.0.0.1",
+    "port": 8455
+  }],
+  "service": {
+    "serviceGroup": "Temperature",
+    "serviceDefinition": "IndoorTemperature",
+    "interfaces": [
+      "json"
+    ]
+  },
+  "duration": 0
+}

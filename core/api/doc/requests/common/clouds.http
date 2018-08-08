@@ -1,0 +1,71 @@
+### Get all known clouds
+# curl -X GET http://localhost:8450/api/common/clouds
+GET http://localhost:8450/api/common/clouds
+
+### Get all known clouds belonging to a given operator
+# curl -X GET http://localhost:8450/api/common/clouds/operator/EVManufacturer
+GET http://localhost:8450/api/common/clouds/operator/EVManufacturer
+
+### Get a cloud by operator and name
+#
+# Note: Currently does not work.
+# To fix change code on CommonApi.java, method getCloud(String, String): Replace
+# @PathParam("cloudname") with @PathParam("cloudName").
+#
+# curl -X GET http://localhost:8450/api/common/clouds/operator/EVManufacturer/cloudname/EVCloud
+GET http://localhost:8450/api/common/clouds/operator/EVManufacturer/cloudname/EVCloud
+
+### Add a list of clouds
+#
+# Adds a list of ArrowheadClouds to the database. Elements which would cause
+# DuplicateEntryException or BadPayloadException (caused by missing operator,
+# cloudName, address or gatekeeperServiceURI) are being skipped. The returned
+# list only contains the elements which was saved in the process.
+#
+# curl -d @payloads/clouds.json -X POST http://localhost:8450/api/common/clouds
+POST http://localhost:8450/api/common/clouds
+Content-Type: application/json
+
+[
+  {
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "arrowhead2.tmit.bme.hu",
+    "port": 8446,
+    "gatekeeperServiceURI": "gatekeeper",
+    "authenticationInfo": "",
+    "isSecure": true
+  },
+  {
+    "operator": "VirtualOperator",
+    "cloudName": "VirtualCloud",
+    "address": "virtual.docker.ahf",
+    "port": 8446,
+    "gatekeeperServiceURI": "http://gatekeeper.virtual.docker.ahf/gatekeeper",
+    "authenticationInfo": "",
+    "isSecure": true
+  }
+]
+
+### Update a cloud
+#
+# curl -d @payloads/cloud.json -X PUT http://localhost:8450/api/common/clouds
+PUT http://localhost:8450/api/common/clouds
+Content-Type: application/json
+
+{
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "cloud.ev.docker.ahf",
+    "port": 8446,
+    "gatekeeperServiceURI": "http://gatekeeper.own.docker.ahf",
+    "authenticationInfo": "",
+    "isSecure": true
+}
+
+### Delete a cloud by operator and name
+#
+# Cannot be done if another entry depnds on this (e.g. authorization rule).
+#
+# curl -X DELETE http://localhost:8450/api/common/clouds/operator/EVManufacturer/cloudname/EVCloud
+DELETE http://localhost:8450/api/common/clouds/operator/EVManufacturer/cloudname/EVCloud

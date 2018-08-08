@@ -1,0 +1,62 @@
+### Get all neighbor clouds
+# curl -X GET http://localhost:8450/api/configuration/neighborhood
+GET http://localhost:8450/api/configuration/neighborhood
+
+### Get a neighbor cloud by operator and name
+# curl -X GET http://localhost:8450/api/configuration/neighborhood/operator/EVManufacturer/cloudname/EVCloud
+GET http://localhost:8450/api/configuration/neighborhood/operator/EVManufacturer/cloudname/EVCloud
+
+### Add a list of neighborhood clouds
+#
+# Adds a list of NeighborClouds to the database. Elements which would cause
+# DuplicateEntryException or BadPayloadException (caused by missing operator,
+# cloudName, address or serviceURI) are being skipped. The returned list only
+# contains the elements which was saved in the process.
+#
+# Note: Not working for me, if you have a working payload, please let me know.
+# Potentially solved by adding a cloud_id field with the necessary
+# annotations on NeighborCloud.java.
+#
+# curl -d @payloads/neighborhood-clouds.json -X POST http://api.docker
+.ahf:8450/api/configuration/neighborhood
+POST http://localhost:8450/api/configuration/neighborhood
+Content-Type: application/json
+
+[{
+    "cloud": {
+        "operator": "VirtualOperator",
+        "cloudName": "VirtualCloud",
+        "address": "cloud.virtual.docker.ahf",
+        "port": 9000,
+        "gatekeeperServiceURI": "gatekeeper.own.docker.ahf",
+        "authenticationInfo": "",
+        "isSecure": true
+    }
+}]
+
+### Update a neighborhood
+#
+#  Untested.
+#
+# curl -d @payloads/cloud-add.json -X PUT http://localhost:8450/api/configuration/neighborhood
+PUT http://localhost:8450/api/configuration/neighborhood
+Content-Type: application/json
+
+{
+    "cloud": {
+        "operator": "VirtualOperator",
+        "cloudName": "VirtualCloud",
+        "address": "cloud.virtual.docker.ahf",
+        "port": 9000,
+        "gatekeeperServiceURI": "gatekeeper.own.docker.ahf",
+        "authenticationInfo": "",
+        "isSecure": true
+    }
+}
+
+### Delete a neighborhood cloud by operator and name
+#
+# Untested
+#
+# curl -X DELETE http://localhost:8450/api/configuration/neighborhood/operator/ahf-docker/cloudname/ahf-docker
+DELETE http://localhost:8450/api/configuration/neighborhood/operator/ahf-docker/cloudname/ahf-docker

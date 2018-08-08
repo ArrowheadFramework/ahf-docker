@@ -1,5 +1,0 @@
-<authorisationRequest> 
-    <serviceType>_hello-s-ws-https._tcp</serviceType>
-    <serviceName>hello-ahf</serviceName>
-    <distinguishedName><replaceForCn/></distinguishedName>
-</authorisationRequest>

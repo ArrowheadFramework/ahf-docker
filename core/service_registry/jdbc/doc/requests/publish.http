@@ -1,0 +1,26 @@
+### Publish (register service)
+# curl -X PUT -H "Content-Type: application/json" -d @payloads/service.json http://sr.docker.ahf:8442/serviceregistry/register
+POST http://sr.docker.ahf:8442/serviceregistry/register
+Content-Type: application/json
+
+{
+	"providedService": {
+		"serviceGroup": "Temperature",
+		"serviceDefinition": "IndoorTemperature",
+		"interfaces": ["json"],
+		"serviceMetadata": {
+			"unit": "celsius"
+		}
+	},
+	"provider": {
+		"systemGroup": "TemperatureSensors",
+		"systemName": "InsecureTemperatureSensor",
+		"address": "0.0.0.0",
+		"port": 8454
+	},
+	"serviceURI": "temperature",
+	"version": 1,
+	"isUDP": false
+}
+
+###

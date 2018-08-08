@@ -1,0 +1,75 @@
+= Docker: Arrowhead Core 3.2 =
+
+This is a ''dockerized'' version of the Arrowhead Framework V3.2 core services combined API.
+
+Please note that this is a potentially un-documented part of the version 3.2 release and therefore might become unavailable later on. At present it is useful for running all of the core services from one container. It also includes a number of operations not accessible from any of the stand-alone services.
+
+Some capabilities, such as automatically cleaning the Service Registry, are only available on their respective stand-alone applications.
+
+The core services contained here were implemented by AITIA International Inc., and the source code can be found [https://github.com/hegeduscs/arrowhead here].
+
+== Usage ==
+
+This assumes you are already running the <code>arrowheadf/db:3.2</code> container or another database configured for working with Arrowhead 3.2.
+
+<pre>docker run --rm \
+           --network ahf \
+           --publish 8450:8450 \
+           --publish 8451:8451 \
+           --env DB_HOST=ahf-db \
+           --name=ahf-core arrowheadf/core:3.2</pre>
+== Tests ==
+
+You can find the test commands under <code>doc/requests</code>. Soon they will be included here as well.
+
+== Helpful commands ==
+
+If you need to register link a hostname with an IP locally, you can use the hosts file. This is useful when testing TLS configurations. The instructions below would let you, for example, get the IP of a container and assign it a host name on your local machine.
+
+Get the IP address of the container (where <code>ahf-api</code> is the name of the container):
+
+<pre>docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    ahf-api</pre>
+Update or add a hosts entry with the container address:
+
+<pre># Configuration (modify as needed
+sr_hostname=&quot;api.docker.ahf&quot;
+sr_container_name=&quot;ahf-api&quot;
+
+# Get current container address
+sr_address=$(docker inspect -f \
+    '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    &quot;$sr_container_name&quot;)
+
+# Comment out any previous entries for that host
+sudo sed -Ei &quot;s/(^[1-9].*$sr_hostname)/#\1/&quot; /etc/hosts
+
+# Add new host entry
+echo &quot;$sr_address $sr_hostname&quot; | sudo tee -a /etc/hosts
+
+# Verify
+cat /etc/hosts</pre>
+== Environment variables ==
+
+* <code>$DB_HOST</code>
+* <code>$DB_ADDRESS</code>
+* <code>$KEYSTORE</code>
+* <code>$KEYSTOREPASS</code>
+* <code>$KEYPASS</code>
+* <code>$TRUSTSTORE</code>
+* <code>$TRUSTSTOREPASS</code>
+* <code>$BASE_URI</code>
+* <code>$BASE_URI_SECURED</code>
+* <code>$DB_USER</code>
+* <code>$DB_PASSWORD</code>
+* <code>$DB_ADDRESS</code>
+* <code>$LOG4J_ROOTLOGGER</code>
+* <code>$LOG4J_APPENDER_DB</code>
+* <code>$LOG4J_APPENDER_DB_DRIVER</code>
+* <code>$LOG4J_APPENDER_DB_URL</code>
+* <code>$LOG4J_APPENDER_DB_USER</code>
+* <code>$LOG4J_APPENDER_DB_PASSWORD</code>
+* <code>$LOG4J_APPENDER_DB_SQL</code>
+* <code>$LOG4J_APPENDER_DB_LAYOUT</code>
+* <code>$LOG4J_LOGGER_ORG_HIBERNATE</code>
+

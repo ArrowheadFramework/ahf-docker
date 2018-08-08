@@ -1,0 +1,59 @@
+### Get all core systems
+# curl -X GET http://localhost:8450/api/configuration/coresystems
+GET http://localhost:8450/api/configuration/coresystems
+
+### Get a core system by system name
+# curl -X GET http://localhost:8450/api/configuration/coresystems/autorization
+GET http://localhost:8450/api/coresystems/autorization
+
+### Add a list of core systems
+#
+# Adds a list of CoreSystems to the database. Elements which would cause
+# DuplicateEntryException or BadPayloadException (caused by missing
+# systemName, address or serviceURI) are being skipped. The returned list only
+# contains the elements which was saved in the process.
+#
+# curl -d @payloads/core-systems.json -X POST http://localhost:8450/api/configuration/coresystems
+POST http://localhost:8450/api/configuration/coresystems
+Content-Type: application/json
+
+[
+    {
+        "systemName": "authorization",
+        "address": "ahf-auth-control",
+        "port": 8444,
+        "serviceURI": "http://ahf-auth-control:8444/authorization",
+        "authenticationInfo": "",
+        "isSecure": false
+    },
+    {
+        "systemName": "service-registry",
+        "address": "ahf-sr-jdbc",
+        "port": 8442,
+        "serviceURI": "http://ahf-sr-jdbc:8442/serviceregistry/register",
+        "authenticationInfo": "",
+        "isSecure": false
+    }
+]
+
+### Update a core system
+#
+#  Specifically, it updates address, port, serviceURI and authenticationInfo.
+#
+# curl -d @payloads/core-system.json -X PUT http://localhost:8450/api/configuration/coresystems
+PUT http://localhost:8450/api/configuration/coresystems
+Content-Type: application/json
+
+{
+    "systemName": "authorization",
+    "address": "ahf-auth-control",
+    "port": 8444,
+    "serviceURI": "http://ahf-auth-control:8444/authorization",
+    "authenticationInfo": "",
+    "isSecure": false
+}
+
+### Delete a core system by name
+#
+# curl -X DELETE http://localhost:8450/api/configuration/coresystems/authorization
+DELETE http://localhost:8450/api/configuration/coresystems/authorization

@@ -1,0 +1,11 @@
+{
+  "cloud": {
+    "operator": "VirtualOperator",
+    "cloudName": "VirtualCloud",
+    "address": "cloud.virtual.docker.ahf",
+    "port": 9000,
+    "gatekeeperServiceURI": "gatekeeper.own.docker.ahf",
+    "authenticationInfo": "",
+    "isSecure": true
+  }
+}

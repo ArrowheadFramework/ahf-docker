@@ -1,0 +1,11 @@
+{
+  "cloud": {
+    "operator": "ahf-docker",
+    "cloudName": "ahf-docker",
+    "address": "cloud.own.docker.ahf",
+    "port": 9000,
+    "gatekeeperServiceURI": "gatekeeper.own.docker.ahf",
+    "authenticationInfo": "",
+    "isSecure": true
+  }
+}

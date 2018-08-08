@@ -1,0 +1,60 @@
+### Get all systems
+# curl -X GET http://localhost:8450/api/common/systems
+GET http://localhost:8450/api/common/systems
+
+### Get all systems belonging to a system group
+# curl -X GET http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors
+GET http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors
+
+### Get a system by group and name
+# curl -X GET http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors/systemname/InsecureTemperatureSensor
+GET http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors/systemname/InsecureTemperatureSensor
+
+### Add a list of systems
+#
+# Adds a list of ArrowheadSystems to the database. Elements which would cause
+# DuplicateEntryException or BadPayloadException (caused by missing
+# systemGroup, systemName or address) are being skipped. The returned list only
+# contains the elements which was saved in the process.
+#
+# curl -d @payloads/systems.json -X POST http://localhost:8450/api/common/systems
+POST http://localhost:8450/api/common/systems
+Content-Type: application/json
+
+[
+  {
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 8454,
+    "authenticationInfo": ""
+  },
+  {
+    "systemGroup": "TemperatureControllers",
+    "systemName": "InsecureTemperatureController",
+    "address": "localhost",
+    "port": 8456,
+    "authenticationInfo": ""
+  }
+]
+
+### Update a system
+#
+# curl -d @payloads/system.json -X PUT http://localhost:8450/api/common/systems
+PUT http://localhost:8450/api/common/systems
+Content-Type: application/json
+
+{
+    "systemGroup": "TemperatureSensors",
+    "systemName": "InsecureTemperatureSensor",
+    "address": "localhost",
+    "port": 9999,
+    "authenticationInfo": ""
+}
+
+### Delete a system by group and name
+#
+# Cannot be done if another entry depnds on this (e.g. authorization rule).
+#
+# curl -X DELETE http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors/systemname/InsecureTemperatureSensor
+DELETE http://localhost:8450/api/common/systems/systemgroup/TemperatureSensors/systemname/InsecureTemperatureSensor

@@ -1,0 +1,84 @@
+### Get all services
+# curl -X GET http://localhost:8450/api/common/services
+GET http://localhost:8450/api/common/services
+
+### Get all services belonging to a service group
+# curl -X GET http://localhost:8450/api/common/services/servicegroup/Temperature
+GET http://localhost:8450/api/common/services/servicegroup/Temperature
+
+### Get a service by group and definition
+# curl -X GET http://localhost:8450/api/common/services/servicegroup/Temperature/servicedef/IndoorTemperature
+GET http://localhost:8450/api/common/services/servicegroup/Temperature/servicedef/IndoorTemperature
+
+### Add a list of services
+#
+# Adds a list of ArrowheadServices to the database. Elements which would cause
+# DuplicateEntryException or BadPayloadException (caused by missing serviceGroup
+# or serviceDefinition) are being skipped. The returned list only contains the
+# elements which was saved in the process.
+#
+# curl -d @payloads/services.json -X POST http://localhost:8450/api/common/services
+POST http://localhost:8450/api/common/services
+Content-Type: application/json
+
+[
+    {
+        "serviceGroup": "Temperature",
+        "serviceDefinition": "OutdoorTemperature",
+        "interfaces": ["json"],
+        "serviceMetadata": {
+            "entry": [
+                {
+                    "key": "unit",
+                    "value": "fahrenheit"
+                }
+            ]
+        }
+    },
+    {
+        "serviceGroup": "Temperature",
+        "serviceDefinition": "IndoorTemperature",
+        "interfaces": ["json"],
+        "serviceMetadata": {
+            "entry": [
+                {
+                    "key": "security",
+                    "value": "token"
+                },
+                {
+                    "key": "unit",
+                    "value": "celsius"
+                }
+            ]
+        }
+    }
+]
+
+### Update a service
+#
+# curl -d @payloads/service.json -X PUT http://localhost:8450/api/common/services
+PUT http://localhost:8450/api/common/services
+Content-Type: application/json
+
+{
+    "serviceGroup": "Temperature",
+    "serviceDefinition": "OutdoorTemperature",
+    "interfaces": ["json"],
+    "serviceMetadata": {
+        "entry": [
+            {
+                "key": "security",
+                "value": "token"
+            },
+            {
+                "key": "unit",
+                "value": "celsius"
+            }
+        ]
+    }
+}
+
+### Delete a service by group and definition.
+#
+# curl -X DELETE http://localhost:8450/api/common/services/servicegroup/Temperature/servicedef/OutdoorTemperature
+DELETE http://localhost:8450/api/common/services/servicegroup/Temperature/servicedef/OutdoorTemperature

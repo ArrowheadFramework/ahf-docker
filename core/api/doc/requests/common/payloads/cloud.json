@@ -1,0 +1,9 @@
+{
+  "operator": "EVManufacturer",
+  "cloudName": "EVCloud",
+  "address": "cloud.ev.docker.ahf",
+  "port": 8446,
+  "gatekeeperServiceURI": "http://gatekeeper.own.docker.ahf",
+  "authenticationInfo": "",
+  "isSecure": true
+}

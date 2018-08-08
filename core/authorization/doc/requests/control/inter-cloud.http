@@ -1,0 +1,32 @@
+### Inter-cloud authorization request (between clouds)
+# curl -X PUT -d @payloads/inter.json http://auth.docker.ahf:8444/authorization/intercloud
+PUT http://auth.docker.ahf:8444/authorization/intercloud
+
+{
+  "cloud":{
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "arrowhead2.tmit.bme.hu",
+    "port": 8446,
+    "gatekeeperServiceUri": "gatekeeper",
+    "authenticationInfo": ""
+  },
+  "service": {
+    "serviceGroup": "Charging",
+    "serviceDefinition": "DCCharging",
+    "interfaces": ["JSON"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "amper",
+        "value": "15"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }
+}
+
+###

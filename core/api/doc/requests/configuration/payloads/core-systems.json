@@ -1,0 +1,18 @@
+[
+  {
+    "systemName": "authorization",
+    "address": "ahf-auth-control",
+    "port": 8444,
+    "serviceURI": "http://ahf-auth-control:8444/authorization",
+    "authenticationInfo": "",
+    "isSecure": false
+  },
+  {
+    "systemName": "service-registry",
+    "address": "ahf-sr-jdbc",
+    "port": 8442,
+    "serviceURI": "http://ahf-sr-jdbc:8442/serviceregistry/register",
+    "authenticationInfo": "",
+    "isSecure": false
+  }
+]

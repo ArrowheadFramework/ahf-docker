@@ -1,0 +1,87 @@
+### Get all InterCloud authorization rules
+# curl -X GET http://localhost:8450/api/auth/intercloud
+GET http://localhost:8450/api/auth/intercloud
+
+### Put an authorization request
+# Checks whether an external Cloud can use a local Service.
+#
+# curl -d @payloads/inter-query.json -X PUT http://localhost:8450/api/auth/intercloud
+PUT http://localhost:8450/api/auth/intercloud
+Content-Type: application/json
+
+{
+  "cloud":{
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "arrowhead2.tmit.bme.hu",
+    "port": 8446,
+    "gatekeeperServiceUri": "gatekeeper",
+    "authenticationInfo": ""
+  },
+  "service": {
+    "serviceGroup": "Charging",
+    "serviceDefinition": "DCCharging",
+    "interfaces": ["JSON"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "amper",
+        "value": "15"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }
+}
+
+### Post authorization rights for a cloud.
+# Adds a new Cloud and its consumable Services to the database.
+#
+# curl -d @payloads/inter-add.json -X POST http://localhost:8450/api/auth/intercloud
+POST http://localhost:8450/api/auth/intercloud
+Content-Type: application/json
+
+{
+  "cloud":{
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "arrowhead2.tmit.bme.hu",
+    "port": 8446,
+    "gatekeeperServiceUri": "gatekeeper",
+    "authenticationInfo": ""
+  },
+  "serviceList": [{
+    "serviceGroup": "Charging",
+    "serviceDefinition": "DCCharging",
+    "interfaces": ["JSON"],
+    "serviceMetadata": {
+      "entry": [{
+        "key": "amper",
+        "value": "15"
+      },
+        {
+          "key": "unit",
+          "value": "celsius"
+        }
+      ]
+    }
+  }]
+}
+
+### Delete an authorization rule by ID.
+# curl -X DELETE http://localhost:8450/api/auth/intercloud/4
+DELETE http://localhost:8450/api/auth/intercloud/4
+
+### Delete an authorization rights of a given cloud (by operator and name).
+# curl -X DELETE http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2
+DELETE http://localhost:8450/api/auth/intercloud/operator/EVManufacturer/cloudname/EVCloud
+
+### Get all InterCloud authorization rights of a given cloud (by operator and name).
+# Returns the list of consumable Services of a Cloud.
+#
+# curl -X GET http://localhost:8450/api/auth/intracloud/systemgroup/group1/systemname/client2/services
+GET http://localhost:8450/api/auth/intercloud/operator/EVManufacturer/cloudname/EVCloud/services
+
+###

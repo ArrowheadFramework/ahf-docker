@@ -1,0 +1,7 @@
+{
+  "systemGroup": "TemperatureSensors",
+  "systemName": "InsecureTemperatureSensor",
+  "address": "localhost",
+  "port": 9999,
+  "authenticationInfo": ""
+}

@@ -1,0 +1,20 @@
+[
+  {
+    "operator": "EVManufacturer",
+    "cloudName": "EVCloud",
+    "address": "arrowhead2.tmit.bme.hu",
+    "port": 8446,
+    "gatekeeperServiceURI": "gatekeeper",
+    "authenticationInfo": "",
+    "isSecure": true
+  },
+  {
+    "operator": "VirtualOperator",
+    "cloudName": "VirtualCloud",
+    "address": "virtual.docker.ahf",
+    "port": 8446,
+    "gatekeeperServiceURI": "http://gatekeeper.virtual.docker.ahf/gatekeeper",
+    "authenticationInfo": "",
+    "isSecure": true
+  }
+]

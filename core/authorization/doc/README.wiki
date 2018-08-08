@@ -1,0 +1,97 @@
+= authorization =
+
+This directory holds a container for running the Arrowhead Framework V3.2 authorization control service core services.
+
+The core services contained here were implemented by AITIA International Inc., and the source code can be found [https://github.com/hegeduscs/arrowhead here].
+
+== Instructions ==
+
+=== Running locally ===
+
+Build this container by running the following command from this directory.
+
+<pre>docker build --tag ahf-auth-control .</pre>
+If you are running a container with a database prepared for Arrowhead 3.2, such as the one located in <code>core/mysql/</code> and that container is connected to a Docker network named, for example, <code>ahf</code>. You can run this container as follows:
+
+<pre>docker run --rm --network ahf --name ahf-auth-control ahf-auth-control</pre>
+== Tests ==
+
+These tests assume that the container is located at <code>auth.docker.ahf</code>. To have your operating system recognize this hostname, you may modify your hosts file or use DNS resolution. See [[#Helpful-commands|Helpful commands]] for an example on modifying the hosts file.
+
+You can find the test commands under <code>doc/requests</code>. Soon they will be included here as well.
+
+=== Publish ===
+
+=== Un-publish ===
+
+=== Query ===
+
+== Helpful commands ==
+
+Get the IP address of the container (where <code>ahf-auth-control</code> is the name of the container):
+
+<pre>docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    ahf-auth-control</pre>
+Update or add a hosts entry with the container address:
+
+<pre># Configuration (modify as needed
+sr_hostname=&quot;auth.docker.ahf&quot;
+sr_container_name=&quot;ahf-auth-control&quot;
+
+# Get current container address
+sr_address=$(docker inspect -f \
+    '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' \
+    &quot;$sr_container_name&quot;)
+
+# Comment out any previous entries for that host
+sudo sed -Ei &quot;s/(^[1-9].*$sr_hostname)/#\1/&quot; /etc/hosts
+
+# Add new host entry
+[ -n &quot;$sr_address&quot; ] &amp;&amp; echo &quot;$sr_address $sr_hostname&quot; | sudo tee -a /etc/hosts
+
+# Verify
+cat /etc/hosts</pre>
+== Environment variables ==
+
+=== <code>$DB_ADDRESS</code> ===
+
+=== <code>$KEYSTORE</code> ===
+
+=== <code>$KEYSTOREPASS</code> ===
+
+=== <code>$KEYPASS</code> ===
+
+=== <code>$TRUSTSTORE</code> ===
+
+=== <code>$TRUSTSTOREPASS</code> ===
+
+=== <code>$BASE_URI</code> ===
+
+=== <code>$BASE_URI_SECURED</code> ===
+
+=== <code>$DB_USER</code> ===
+
+=== <code>$DB_PASSWORD</code> ===
+
+=== <code>$DB_ADDRESS</code> ===
+
+=== <code>$ENABLE_AUTH_FOR_CLOUD</code> ===
+
+=== <code>$LOG4J_ROOTLOGGER</code> ===
+
+=== <code>$LOG4J_APPENDER_DB</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_DRIVER</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_URL</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_USER</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_PASSWORD</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_SQL</code> ===
+
+=== <code>$LOG4J_APPENDER_DB_LAYOUT</code> ===
+
+=== <code>$LOG4J_LOGGER_ORG_HIBERNATE</code> ===
+

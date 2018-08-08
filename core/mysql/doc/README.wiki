@@ -1,0 +1,31 @@
+= Docker: Database 3.2 =
+
+This is a ''dockerized'' version of the MySQL/MariaDB database pre-configured for working with the Arrowhead Framework V3.2 core services.
+
+== Instructions ==
+
+== Usage ==
+
+First, create a Docker network for other containers to connect to this one. This step is not necessary if you have created the network previously.
+
+<pre>docker network create ahf</pre>
+Then, run the database container.
+
+<pre>docker run -t --rm \
+           --network ahf \
+           --publish 3306:3306 \
+           --name=ahf-db arrowheadf/db:3.2</pre>
+To stop the container, you need to run the following command. This is because of how the official Docker MySQL image is configured.
+
+<pre>docker stop ahf-db</pre>
+== Environment Variables ==
+
+The environment variables in this container are the same as for the official MySQL Docker one.
+
+* <code>MYSQL_ROOT_PASSWORD</code>
+* <code>MYSQL_DATABASE</code>
+* <code>MYSQL_USER, MYSQL_PASSWORD</code>
+* <code>MYSQL_ALLOW_EMPTY_PASSWORD</code>
+* <code>MYSQL_RANDOM_ROOT_PASSWORD</code>
+* <code>MYSQL_ONETIME_PASSWORD</code>
+

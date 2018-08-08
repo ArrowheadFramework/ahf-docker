@@ -1,0 +1,31 @@
+= Swagger generator =
+
+This is a tool for extracting documentation from the JAX-RS implementation of the core services. All of the services use JAX-RS and therefore all can be extracted.
+
+''Please note that this is just a containerization around Sebastian Daschner's thesis result <code>jaxrs-analyzer</code> released under the Apache-2.0 license applied to the Arrowhead Framework 3.2 core services by AITIA International Inc.''
+
+Assuming you were interested in extracting documentation for the authorization control service, you would do the following:
+
+<pre>docker build --tag tools-generate-payloads .
+docker run --rm -it tools-generate-payloads authorization &gt; auth-ctrl.json</pre>
+Then, you can go to [https://editor.swagger.io/ the Swagger Editor] and use this file to view the documentation in a nice format and generate client stubs.
+
+The idea is for this container to also generate the documentation as a HTML document without the need to go to through the swagger editor, but please be patient.
+
+This could also be then used to generate documentation in other formats, and that might be done in the future.
+
+== Examples ==
+
+<pre>docker run --rm -it tools-generate-payloads authorization &gt; auth-ctrl.json
+
+docker run --rm -it tools-generate-payloads serviceregistry &gt; sr.json
+
+docker run --rm -it tools-generate-payloads orchestrator &gt; orch.json
+
+docker run --rm -it tools-generate-payloads gatekeeper &gt; gatekeeper.json
+
+docker run --rm -it tools-generate-payloads gateway &gt; gateway.json
+
+docker run --rm -it tools-generate-payloads qos &gt; qos.json
+
+docker run --rm -it tools-generate-payloads api &gt; api.json</pre>
