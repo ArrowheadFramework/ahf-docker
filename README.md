@@ -1,19 +1,8 @@
-# ahf-docker:4.0-lw
+# Arrowhead Core 4.0-lw Docker Containers
 
-_*Disclaimer:* This is Work In Progress (WIP). Please raise any issues you 
-find._
-
-## Overview
-
-This directory contains Docker containers for the Arrowhead project (subject to
-its corresponding license). These containers allow for quicker development
-without the need for connecting to an existing _local cloud_. Currently, these
-containers are at an alpha stage. Please submit any issues you find or
-enhancements you would like to see.
-
-This document and the contents of this directory are for version *4.0-lw* of the
-Arrowhead Framework. If you are interested in a different version, please see
-the corresponding directory.
+This container allows for quicker development without the need for connecting to
+an existing _local cloud_. Currently, this container is at an alpha stage.
+Please submit any issues you find or enhancements you would like to see.
 
 Version 4.0-lw is a lightweight implementation which contains all core services
 in a single Java JAR file. In turn, this container wraps everything necessary
@@ -23,14 +12,48 @@ requirements which might not allow several containers to be run.
 
 ## Usage
 
-To run the core container, you would first build it and then run it.
+This version is meant to only require a single command.
 
 ```bash
-docker build -t ahf:4.0 core
+docker run --rm -p 8440:8440 arrowheadf/core:4.0
 ```
 
+To test the service, you can run the following command.
+
 ```bash
-docker run -it --rm -p 8440:8440 --name ahf ahf:4.0
+curl localhost:8440/serviceregistry
+```
+
+Which should respond with _This is the Service Registry Arrowhead Core System._.
+
+## Building from source
+
+The easiest way to get the source code is to download the latest [snapshot of
+the
+docker.git](https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=refs/heads/4.0-lw;sf=tgz)
+repository and extract it.
+
+In the Linux command line, you can use the following commands.
+
+```bash
+curl -k -o ahf-docker-4.0.tar.gz \
+'https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=refs/heads/4.0-lw;sf=tgz'
+mkdir -p ahf-docker-4.0
+tar -xvf ahf-docker-4.0.tar.gz -C ahf-docker-4.0 --strip-component=1
+cd ahf-docker-4.0
+```
+
+Once you have the source code, you can make any necessary modifications and then
+build the image.
+```bash
+docker build -t arrowheadf/core:4.0 core/
+```
+
+If you are a developer for the containers, you might want to push any
+improvements you make.
+
+```bash
+docker push arrowheadf/core:4.0
 ```
 
 ## API documentation
@@ -120,16 +143,3 @@ Arrowhead Core 4.0 developers.
 * LOG4J_APPENDER_DB_SQL
 * LOG4J_APPENDER_DB_LAYOUT
 * LOG4J_LOGGER_ORG_HIBERNATE
-
-## Disclaimer
-
-Some of the instructions in this document will open ports on your computer 
-depending on your configuration. This is expected. If you are concerned about 
-the security implications, you may isolate your computer through different 
-means, some of them are discussed in the corresponding sections. To further 
-understand the different means of isolating your computer, please refer to 
-the documentation of your operating system and Docker.
-
-_It is the responsibility of the user to ensure security of their system. The 
-authors of any tool contained or described here are not liable for any 
-damages resulting from usage of these tools._
