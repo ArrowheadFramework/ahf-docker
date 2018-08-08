@@ -54,7 +54,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run --rm -p 8440:8440 arrowheadf/core:4.0</code></pre></div>
 <p>To test the service, you can run the following command.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">curl</span> localhost:8440/serviceregistry</code></pre></div>
-<p>Which should respond with <em>This is the Service Registry Arrowhead Core System.</em>.</p>
+<p>Which should respond with <em>This is the Service Registry Arrowhead Core System</em>.</p>
 <h2 id="building-from-source">Building from source</h2>
 <p>The easiest way to get the source code is to download the latest <a href="https://forge.soa4d.org/anonscm/gitweb?p=arrowhead-f/users/docker.git;a=snapshot;h=refs/heads/4.0-lw;sf=tgz">snapshot of the docker.git</a> repository and extract it.</p>
 <p>In the Linux command line, you can use the following commands.</p>
@@ -88,7 +88,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <h2 id="environment-variables">Environment Variables</h2>
 <p>Any of the properties accepted by the Arrowhead Core 4.0 Lightweight application can be overridden by using an environment variable of the same name (but in uppercase and substituting dots by underscores).</p>
-<p>For example, to set the property <code>ttl_interval</code>, we would use the environment variable <code>TTL_INTERVAL</code> as follows</p>
+<p>For example, to set the property <code>ttl_interval</code>, we would use the environment variable <code>TTL_INTERVAL</code> as follows.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">docker</span> run -it --rm -p 8440:8440 -e TTL_INTERVAL=1000 --name ahf ahf:4.0</code></pre></div>
 <p>The available variables are as follows. For the purpose of each, contact the Arrowhead Core 4.0 developers.</p>
 <ul>

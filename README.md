@@ -24,7 +24,7 @@ To test the service, you can run the following command.
 curl localhost:8440/serviceregistry
 ```
 
-Which should respond with _This is the Service Registry Arrowhead Core System._.
+Which should respond with _This is the Service Registry Arrowhead Core System_.
 
 ## Building from source
 
@@ -100,7 +100,7 @@ can be overridden by using an environment variable of the same name (but in
 uppercase and substituting dots by underscores).
 
 For example, to set the property `ttl_interval`, we would use the environment
-variable `TTL_INTERVAL` as follows
+variable `TTL_INTERVAL` as follows.
 
 ```bash
 docker run -it --rm -p 8440:8440 -e TTL_INTERVAL=1000 --name ahf ahf:4.0

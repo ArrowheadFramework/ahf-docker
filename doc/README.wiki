@@ -12,7 +12,7 @@ This version is meant to only require a single command.
 To test the service, you can run the following command.
 
 <pre>curl localhost:8440/serviceregistry</pre>
-Which should respond with ''This is the Service Registry Arrowhead Core System.''.
+Which should respond with ''This is the Service Registry Arrowhead Core System''.
 
 == Building from source ==
 
@@ -60,7 +60,7 @@ sudo chown -R $USER:$USER .</pre></li>
 
 Any of the properties accepted by the Arrowhead Core 4.0 Lightweight application can be overridden by using an environment variable of the same name (but in uppercase and substituting dots by underscores).
 
-For example, to set the property <code>ttl_interval</code>, we would use the environment variable <code>TTL_INTERVAL</code> as follows
+For example, to set the property <code>ttl_interval</code>, we would use the environment variable <code>TTL_INTERVAL</code> as follows.
 
 <pre>docker run -it --rm -p 8440:8440 -e TTL_INTERVAL=1000 --name ahf ahf:4.0</pre>
 The available variables are as follows. For the purpose of each, contact the Arrowhead Core 4.0 developers.
